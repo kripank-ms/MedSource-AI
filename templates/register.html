@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sign Up Page</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+
+    .signup-box {
+        width: 380px;
+        padding: 40px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+
+    .signup-box h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .input-box {
+        margin-bottom: 12px;
+        text-align: left;
+    }
+
+    .input-box label {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .input-box input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    .input-box input:focus {
+        border-color: #43e97b;
+        box-shadow: 0 0 5px rgba(67,233,123,0.5);
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        background:#4facfe;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+
+    .btn:hover {
+        background: #0077ff;
+    }
+
+    .extra {
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    .extra a {
+        color: #4facfe;
+        text-decoration: none;
+    }
+
+    .extra a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="signup-box">
+    <h2>Create Account</h2>
+
+    <form action="/register" method="POST" enctype="multipart/form-data">
+        <div class="input-box">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter username" required>
+        </div>
+
+        <div class="input-box">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter email" required>
+        </div>
+
+        <div class="input-box">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+        </div>
+
+        <div class="input-box">
+            <label for="">If you want a face Lock please upload your photo</label>
+            <input type="file" name="file" accept="image/*" capture="camera">
+        </div>
+
+        <button class="btn" type="submit">Sign Up</button>
+
+
+
+    
+
+    </form>
+
+    <div class="extra">
+        <p>Already have an account? <a href="/login_page">Login</a></p>
+    </div>
+</div>
+
+</body>
+
+
+
+</html>

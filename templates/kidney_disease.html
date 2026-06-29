@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKD Prediction System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            justify-content: center;
+            padding: 30px;
+        }
+      
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #0d6efd;
+            margin-bottom: 25px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0b5ed7;
+        }
+        .message_box{
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>CKD Prediction System</h1>
+
+        <form action="/predict_ckd" method="post">
+
+            <div class="grid">
+
+                <div>
+                    <label>Age</label>
+                    <input type="number" name="age" required max="120">
+                </div>
+
+                <div>
+                    <label>Gender</label>
+                    <select name="gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>BMI</label>
+                    <input type="number" step="0.1" name="bmi" required min="8" max="185">
+                </div>
+
+                <div>
+                    <label>Systolic BP</label>
+                    <input type="number" name="systolic_bp" required min="50" max="300">
+                </div>
+
+                <div>
+                    <label>Diastolic BP</label>
+                    <input type="number" name="diastolic_bp" required min="30" max="180">
+                </div>
+
+                <div>
+                    <label>Diabetes</label>
+                    <select name="diabetes">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Hypertension</label>
+                    <select name="hypertension">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Serum Creatinine</label>
+                    <input type="number" step="0.01" name="serum_creatinine" required min="0.1" max="15">
+                </div>
+
+                <div>
+                    <label>Blood Urea</label>
+                    <input type="number" step="0.1" name="blood_urea" required min="5" max="200">
+                </div>
+
+                <div>
+                    <label>eGFR</label>
+                    <input type="number" step="0.1" name="egfr" required min="1" max="200">
+                </div>
+
+                <div>
+                    <label>Albumin (0-5)</label>
+                    <input type="number" min="0" max="5" name="albumin" required>
+                </div>
+
+                <div>
+                    <label>Hemoglobin</label>
+                    <input type="number" min="5" max="20" step="0.1" name="hemoglobin" required>
+                </div>
+
+                <div>
+                    <label>Sodium</label>
+                    <input type="number" step="0.1" min="100" max="170" name="sodium" required>
+                </div>
+
+                <div>
+                    <label>Potassium</label>
+                    <input type="number" step="0.1" min="1" max="8" name="potassium" required>
+                </div>
+
+                <div>
+                    <label>Urine Protein (0-5)</label>
+                    <input type="number" min="0" max="5" name="urine_protein" required>
+                </div>
+
+                <div>
+                    <label>Smoking</label>
+                    <select name="smoking">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Heart Disease</label>
+                    <select name="heart_disease">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Edema</label>
+                    <select name="edema">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Fatigue</label>
+                    <select name="fatigue">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Anemia</label>
+                    <select name="anemia">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit">Predict CKD</button>
+
+        </form>
+
+    </div>
+    <div class="message_box">
+    {% if prediction is not none %}
+
+    {% if prediction == 1 %}
+    <h2 style="color:#d32f2f;">
+        ⚠️ Chronic Kidney Disease (CKD) Risk: Positive
+    </h2>
+
+    <p>
+        The prediction model suggests that you may be at an increased risk of Chronic Kidney Disease (CKD).
+        This prediction is intended for screening purposes only and is not a medical diagnosis.
+        Please consult a healthcare professional for confirmatory tests and appropriate medical advice.
+    </p>
+    {% endif %}
+    {% if prediction == 0 %}
+    <h2 style="color:#2e7d32;">
+        ✅ Chronic Kidney Disease (CKD) Risk: Negative
+    </h2>
+
+    <p>
+        The prediction model suggests a lower likelihood of Chronic Kidney Disease (CKD).
+        This result does not guarantee the absence of kidney disease.
+        Continue regular health checkups and maintain healthy lifestyle habits to protect kidney function.
+    </p>
+    {% endif %}
+
+    {% endif %}
+
+    </div>
+
+</body>
+
+</html>

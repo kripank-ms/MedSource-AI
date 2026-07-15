@@ -32,17 +32,29 @@
 
 .card_1{
     background-image:url("images/heart.jpg");
+    color: #000000;
 }
 .card_2{
     background-image:url("images/kidney.jpg");
+    color: #000000;
 }
+.card_3{
+    background-image: url("images/Stroke.jpg");
+    color: #ffffff;
 
-
+}
+.card_4{
+    background-image: url("images/COPD.webp");
+    color: #ffffff;
+}
+.card_5{
+    background-image: url("images/Tuberculosis.jpg");
+    color: #ffffff;
+}
 
 .card p{
     margin-left: 5px;
-   color: #000000;
-   margin-bottom:15px;
+    margin-bottom:15px;
 }
 
 .card button{

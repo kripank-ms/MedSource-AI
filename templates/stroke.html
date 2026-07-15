@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKD Prediction System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            justify-content: center;
+            padding: 30px;
+        }
+      
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #0d6efd;
+            margin-bottom: 25px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0b5ed7;
+        }
+        .message_box{
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Stroke Prediction System</h1>
+
+        <form action="/predict_stroke" method="post">
+
+            <div class="grid">
+
+                <div>
+                    <label>Age</label>
+                    <input type="number" name="Age" required max="120">
+                </div>
+
+                <div>
+                    <label>Gender</label>
+                    <select name="Gender">
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>BMI</label>
+                    <input type="number" step="0.1" name="BMI" required min="8" max="185">
+                </div>
+
+                <div>
+                    <label>Hypertension</label>
+                    <select name="Hypertension">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Diabetes</label>
+                    <select name="Diabetes">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Heart Disease</label>
+                    <select name="Heart_disease">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Smoking</label>
+                    <select name="Smoking">
+                        <option value="0">Never</option>
+                        <option value="1">Former</option>
+                        <option value="2">Current</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Alcohol Use</label>
+                    <select name="Alcohol_use">
+                        <option value="0">Never</option>
+                        <option value="1">Occasional</option>
+                        <option value="2">Regular</option>
+                    </select>              
+                </div>
+
+                <div>
+                    <label>Cholesterol (mg/dL)</label>
+                    <input type="number" step="0.1" name="Cholesterol" required min="100" max="400">
+                </div>
+
+                <div>
+                    <label>Blood Glucose (mg/dL)</label>
+                    <input type="number" step="0.1" name="Blood_glucose" required min="50" max="500">
+                </div>
+
+                <div>
+                    <label>Oxygen Saturation</label>
+                    <input type="number" min="50" max="100" name="Oxygen_saturation" required>
+                </div>
+
+                <div>
+                    <label>Systolic BP (mmHg)</label>
+                    <input type="number" min="70" max="250" step="1" name="Systolic_BP" required>
+                </div>
+
+                <div>
+                    <label>Diastolic BP</label>
+                    <input type="number" step="1" min="40" max="570" name="Diastolic_BP" required>
+                </div>
+
+                <div>
+                    <label>Arm weakness</label>
+                    <select name="Arm_weakness">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Leg weakness</label>
+                    <select name="Leg_weakness">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Speech Difficulty</label>
+                    <select name="Speech_difficulty">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Confusion</label>
+                    <select name="Confusion">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Vision Loss</label>
+                    <select name="Vision_loss">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Severe Headache</label>
+                    <select name="Severe_headache">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Family History</label>
+                    <select name="Family_history">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Previous TIA</label>
+                    <select name="Previous_TIA">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit">Predict Stroke</button>
+
+        </form>
+
+    </div>
+    <div class="message_box">
+        {% if prediction is not none %}
+
+        {% if prediction == 1 %}
+        <h2 style="color:#d32f2f;">
+            ⚠️ Stroke Risk: Positive
+        </h2>
+
+        <p>
+            The prediction model suggests that you may be at an increased risk of stroke.
+            This prediction is intended for screening purposes only and is not a medical diagnosis.
+            Please consult a healthcare professional immediately for further evaluation, confirmatory tests, and appropriate medical advice.
+        </p>
+        {% endif %}
+
+        {% if prediction == 0 %}
+        <h2 style="color:#2e7d32;">
+            ✅ Stroke Risk: Negative
+        </h2>
+
+        <p>
+            The prediction model suggests a lower likelihood of stroke.
+            This result does not guarantee the absence of stroke or other cardiovascular conditions.
+            Continue regular health checkups, maintain a healthy lifestyle, and manage risk factors such as blood pressure, blood sugar, cholesterol, smoking, and physical activity.
+        </p>
+        {% endif %}
+
+        {% endif %}
+    </div>
+
+</body>
+
+</html>

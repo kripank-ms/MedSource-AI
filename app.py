@@ -23,6 +23,9 @@ app.mount("/static",StaticFiles(directory="static"), name="static")
 # Models
 heart_model = load("Build Models/Heart_model.joblib")
 kidney_model = load("Build Models/ckd_model.joblib")
+stroke_model = load("Build Models/stroke_model.joblib")
+copd_model = load("Build Models/Copd.joblib")
+tb_model = load("Build Models/Copd.joblib")
 
 
 templates = Jinja2Templates(directory="templates")
@@ -80,7 +83,12 @@ async def heart_disease(request:Request):
 @app.get("/kidney_disease",response_class=HTMLResponse)
 async def kidney_disease(request:Request):
 
-    return templates.TemplateResponse(name="kidney_disease.html",request=request,context={"presiction":None})
+    return templates.TemplateResponse(name="kidney_disease.html",request=request,context={"prediction":None})
+
+@app.get("/stroke", response_class=HTMLResponse)
+async def stroke(requerst:Request):
+
+    return templates.TemplateResponse(name="stroke.html",request=requerst,context={"prediction":None})
 # MongoDB Connection
 
 client = MongoClient("mongodb://localhost:27017")
@@ -298,6 +306,35 @@ async def predict_ckd(request:Request,
             "prediction": prediction
         }
     )
+@app.post("/predict_stroke")
+async def predict_stroke(request:Request,
+                        Age : int = Form(...),
+                        Gender : str = Form(...),
+                        BMI : float = Form(...),
+                        Hypertension : int = Form(...),
+                        Diabetes : int = Form(...),
+                        Heart_disease : int = Form(...),
+                        Smoking : int = Form(...),
+                        Alcohol_use : float = Form(...),
+                        Cholesterol : float = Form(...),
+                        Blood_glucose : float = Form(...),
+                        Oxygen_saturation : int = Form(...),
+                        Systolic_BP : float = Form(...),
+                        Diastolic_BP : float = Form(...),
+                        Arm_weakness : float = Form(...),
+                        Leg_weakness : int = Form(...),
+                        Speech_difficulty : int = Form(...),
+                        Confusion : int = Form(...),
+                        Vision_loss : int = Form(...),
+                        Severe_headache : int = Form(...), 
+                        Family_history : int = Form(...),
+                        Previous_TIA : int = Form(...)
+                            ):
+    
+    columns = ['Age', 'Gender', 'BMI', 'Hypertension', 'Diabetes', 'Heart_disease', 'Smoking', 'Alcohol_use', 'Cholesterol', 'Blood_glucose', 'Oxygen_saturation', 'Systolic_BP', 'Diastolic_BP', 'Arm_weakness', 'Leg_weakness', 'Speech_difficulty', 'Confusion', 'Vision_loss','Severe_headache', 'Family_history', 'Previous_TIA']
+    user_data = pd.DataFrame([[Age,Gender,BMI,Hypertension,Diabetes,Heart_disease,Smoking,Alcohol_use,Cholesterol,Blood_glucose,Oxygen_saturation,Systolic_BP,Diastolic_BP,Arm_weakness,Leg_weakness,Speech_difficulty,Confusion,Vision_loss,Severe_headache,Family_history,Previous_TIA]],columns=columns)
+    prediction = stroke_model.predict(user_data)
+    return templates.TemplateResponse(name="stroke.html",request=request,context={"prediction":prediction})
 
 
 

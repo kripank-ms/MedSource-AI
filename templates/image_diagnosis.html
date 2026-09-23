@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Medical Image Diagnosis</title>
+
+<style>
+  :root {
+    --ink: #2b2b28;
+    --paper: #faf8f4;
+    --line: #ddd7cb;
+    --accent: #4a6a5a;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--paper);
+
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+  }
+
+  .card {
+    width: 380px;
+    max-width: 90vw;
+
+    padding: 40px 32px;
+
+    background: #fff;
+
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+
+  h1 {
+    font-size: 19px;
+    font-weight: 600;
+
+    margin: 0 0 6px;
+  }
+
+  .hint {
+    margin: 0 0 24px;
+
+    font-size: 13px;
+    color: #7a756a;
+  }
+
+  .drop {
+    position: relative;
+
+    display: block;
+
+    border: 1.5px dashed var(--line);
+    border-radius: 4px;
+
+    padding: 28px 16px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .drop:hover,
+  .drop.dragover {
+    border-color: var(--accent);
+    background: #f4f6f4;
+  }
+
+  .drop svg {
+    width: 26px;
+    height: 26px;
+
+    margin-bottom: 10px;
+
+    stroke: var(--accent);
+  }
+
+  .drop-label {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .drop-sub {
+    font-size: 12px;
+
+    color: #9a9488;
+
+    margin-top: 4px;
+  }
+
+  input[type="file"] {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+
+    cursor: pointer;
+  }
+
+  .preview {
+    margin-top: 20px;
+
+    display: none;
+  }
+
+  .preview.show {
+    display: block;
+  }
+
+  .preview img {
+    width: 100%;
+    max-height: 220px;
+
+    object-fit: cover;
+
+    border-radius: 4px;
+    border: 1px solid var(--line);
+
+    display: block;
+  }
+
+  .filename {
+    margin-top: 8px;
+
+    font-size: 12px;
+
+    color: #7a756a;
+
+    word-break: break-all;
+  }
+
+  .submit-btn {
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 11px 16px;
+
+    background: var(--accent);
+    color: #fff;
+
+    border: none;
+    border-radius: 4px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background 0.15s ease;
+  }
+
+  .submit-btn:hover {
+    background: #3d5a4c;
+  }
+
+  .submit-btn:disabled {
+    background: #c9c4b8;
+
+    cursor: not-allowed;
+  }
+
+  /* ================================
+   MEDICAL AI LOADING SCREEN
+================================ */
+
+    #loadingOverlay {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(244, 248, 245, 0.96);
+
+    z-index: 99999;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+    }
+
+    .scanner-card {
+    width: 420px;
+    max-width: 95%;
+
+    background: #ffffff;
+
+    border-radius: 24px;
+
+    padding: 35px 30px;
+
+    text-align: center;
+
+    box-shadow: 0 15px 50px rgba(35, 75, 55, 0.15);
+
+    animation: cardAppear 0.4s ease;
+    }
+
+
+    /* Medical Icon */
+
+    .medical-icon {
+    width: 75px;
+    height: 75px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: #e4f3eb;
+
+    color: #198754;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    overflow: hidden;
+    }
+
+    .medical-icon span {
+    font-size: 42px;
+    font-weight: 300;
+
+    z-index: 2;
+    }
+
+    .pulse-line {
+    position: absolute;
+
+    width: 120px;
+    height: 2px;
+
+    background: #198754;
+
+    left: -120px;
+
+    animation: pulseScan 1.5s infinite;
+    }
+
+
+    /* Heading */
+
+    .scanner-card h2 {
+    margin: 0;
+
+    color: #174d38;
+
+    font-size: 23px;
+    }
+
+    .main-loading-text {
+    margin-top: 8px;
+
+    color: #6b7d74;
+
+    font-size: 15px;
+    }
+
+
+    /* Progress */
+
+    .progress-container {
+    width: 100%;
+
+    height: 6px;
+
+    background: #e5eee9;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    margin: 25px 0;
+    }
+
+    .progress-bar {
+    width: 30%;
+
+    height: 100%;
+
+    background: #198754;
+
+    border-radius: 10px;
+
+    animation: progressAnimation 4s infinite;
+    }
+
+
+    /* Steps */
+
+    .steps {
+    text-align: left;
+
+    margin-top: 20px;
+    }
+
+    .step {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px 12px;
+
+    margin-bottom: 7px;
+
+    border-radius: 10px;
+
+    color: #9aa9a1;
+
+    font-size: 14px;
+
+    transition: all 0.4s ease;
+    }
+
+    .step.active {
+    background: #eef8f2;
+
+    color: #176b4d;
+
+    font-weight: 600;
+    }
+
+    .step.completed {
+    color: #198754;
+    }
+
+    .step-icon {
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e5eee9;
+
+    font-size: 12px;
+    }
+
+    .step.active .step-icon,
+    .step.completed .step-icon {
+    background: #198754;
+
+    color: white;
+    }
+
+
+    /* Warning */
+
+    .warning-text {
+    margin-top: 20px;
+
+    font-size: 12px;
+
+    color: #8a9891;
+    }
+
+
+    /* Animations */
+
+    @keyframes pulseScan {
+
+    0% {
+        left: -120px;
+    }
+
+    100% {
+        left: 120px;
+    }
+
+    }
+
+    @keyframes progressAnimation {
+
+    0% {
+        width: 10%;
+    }
+
+    50% {
+        width: 70%;
+    }
+
+    90% {
+        width: 90%;
+    }
+
+    100% {
+        width: 10%;
+    }
+
+    }
+
+    @keyframes cardAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h1>Upload a medical image</h1>
+
+  <p class="hint">
+    PNG or JPG — choose an image to preview it below.
+  </p>
+
+
+  <!-- IMPORTANT:
+       enctype is required for FastAPI UploadFile
+  -->
+  <form
+    action="/image_diagnosis"
+    method="POST"
+    enctype="multipart/form-data"
+    id="uploadForm"
+  >
+
+    <label class="drop" id="dropZone">
+
+      <!-- Upload icon -->
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 16V4"/>
+        <path d="M12 4l-4 4"/>
+        <path d="M12 4l4 4"/>
+        <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+      </svg>
+
+      <div class="drop-label">
+        Click to choose an image
+      </div>
+
+      <div class="drop-sub">
+        or drag and drop it here
+      </div>
+
+
+      <!-- IMPORTANT:
+           name must match FastAPI:
+           imageInput: UploadFile
+      -->
+      <input
+        type="file"
+        id="imageInput"
+        name="imageInput"
+        accept="image/png,image/jpeg"
+        required
+      >
+
+    </label>
+
+
+    <!-- Image preview -->
+    <div class="preview" id="preview">
+
+      <img
+        id="previewImg"
+        src=""
+        alt="Selected image preview"
+      >
+
+      <div
+        class="filename"
+        id="fileName"
+      ></div>
+
+    </div>
+
+
+    <button
+      type="submit"
+      class="submit-btn"
+      id="submitBtn"
+      disabled
+    >
+      Upload photo
+    </button>
+
+  </form>
+
+</div>
+
+
+<!-- Medical AI Loading Screen -->
+<div id="loadingOverlay">
+
+    <div class="scanner-card">
+
+        <div class="medical-icon">
+            <div class="pulse-line"></div>
+            <span>+</span>
+        </div>
+
+        <h2>Medical AI Analysis</h2>
+
+        <p class="main-loading-text">
+            Analyzing your image...
+        </p>
+
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div class="steps">
+
+            <div class="step active" id="step1">
+                <span class="step-icon">✓</span>
+                <span>Uploading image</span>
+            </div>
+
+            <div class="step" id="step2">
+                <span class="step-icon">○</span>
+                <span>Checking image type</span>
+            </div>
+
+            <div class="step" id="step3">
+                <span class="step-icon">○</span>
+                <span>Analyzing medical image</span>
+            </div>
+
+            <div class="step" id="step4">
+                <span class="step-icon">○</span>
+                <span>Preparing result</span>
+            </div>
+
+        </div>
+
+        <p class="warning-text">
+            Please don't close or refresh this page.
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+  const input = document.getElementById("imageInput");
+
+  const dropZone = document.getElementById("dropZone");
+
+  const preview = document.getElementById("preview");
+
+  const previewImg = document.getElementById("previewImg");
+
+  const fileName = document.getElementById("fileName");
+
+  const submitBtn = document.getElementById("submitBtn");
+
+
+
+
+  const medicalForm = document.getElementById("uploadForm");
+
+  medicalForm.addEventListener("submit", function () {
+
+      // Show loading screen
+      document.getElementById("loadingOverlay").style.display = "flex";
+
+      // Step 1
+      setTimeout(function () {
+
+          document.getElementById("step1").classList.add("completed");
+
+          document.getElementById("step2").classList.add("active");
+
+      }, 700);
+
+
+      // Step 2
+      setTimeout(function () {
+
+          document.getElementById("step2").classList.remove("active");
+          document.getElementById("step2").classList.add("completed");
+
+          document.getElementById("step3").classList.add("active");
+
+      }, 1800);
+
+
+      // Step 3
+      setTimeout(function () {
+
+          document.getElementById("step3").classList.remove("active");
+          document.getElementById("step3").classList.add("completed");
+
+          document.getElementById("step4").classList.add("active");
+
+      }, 3500);
+
+  });
+
+
+
+  function showPreview(file) {
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file.");
+      return;
+    }
+
+
+    const reader = new FileReader();
+
+
+    reader.onload = function(event) {
+
+      previewImg.src = event.target.result;
+
+      fileName.textContent = file.name;
+
+      preview.classList.add("show");
+
+      submitBtn.disabled = false;
+
+    };
+
+
+    reader.readAsDataURL(file);
+  }
+
+
+  /*
+    Normal file selection
+  */
+  input.addEventListener("change", function() {
+
+    const file = input.files[0];
+
+    if (file) {
+      showPreview(file);
+    }
+
+  });
+
+
+  /*
+    Drag over
+  */
+  ["dragenter", "dragover"].forEach(function(eventName) {
+
+    dropZone.addEventListener(eventName, function(event) {
+
+      event.preventDefault();
+
+      dropZone.classList.add("dragover");
+
+    });
+
+  });
+
+
+  /*
+    Drag leave / drop
+  */
+  ["dragleave", "drop"].forEach(function(eventName) {
+
+    dropZone.addEventListener(eventName, function(event) {
+
+      event.preventDefault();
+
+      dropZone.classList.remove("dragover");
+
+    });
+
+  });
+
+
+  /*
+    Drop image
+  */
+  dropZone.addEventListener("drop", function(event) {
+
+    const files = event.dataTransfer.files;
+
+    if (files.length > 0) {
+
+      input.files = files;
+
+      showPreview(files[0]);
+
+    }
+
+  });
+
+</script>
+
+</body>
+</html>
+<!-- ```
+
+### The important part
+
+Your HTML now sends:
+
+```text
+imageInput
+```
+
+and FastAPI receives:
+
+```python
+imageInput: UploadFile = File(...)
+```
+
+So they match:
+
+```text
+HTML                         FastAPI
+
+name="imageInput"     →     imageInput: UploadFile
+multipart/form-data   →     File(...)
+POST /image_diagnosis →     @app.post("/image_diagnosis")
+```
+
+Your existing endpoint can therefore receive the image normally.
+
+**One recommendation:** keep the JavaScript only for preview/drag-and-drop. Don't put `preventDefault()` on the form's `submit` event or manually disable the submit button when clicked, because that can stop the browser from sending the POST request. -->

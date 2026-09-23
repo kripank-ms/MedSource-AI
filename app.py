@@ -8,11 +8,19 @@ from fastapi.requests import Request
 from pymongo import MongoClient
 from passlib.context import CryptContext
 from starlette.middleware.sessions import SessionMiddleware
+import tensorflow as tf
+import tensorflow.keras.applications as applications
+from tensorflow.keras.models import load_model
+import Build_Models.clahe as clahe
 from joblib import load
+import io
 import os
 import numpy as np
 import pandas as pd
 import face_recognition
+from PIL import Image
+import base64
+
 
 
 app = FastAPI()
@@ -21,11 +29,25 @@ app.add_middleware(SessionMiddleware,secret_key="assesseionsecretkeys222")
 app.mount("/static",StaticFiles(directory="static"), name="static")
 
 # Models
-heart_model = load("Build Models/Heart_model.joblib")
-kidney_model = load("Build Models/ckd_model.joblib")
-stroke_model = load("Build Models/stroke_model.joblib")
-copd_model = load("Build Models/Copd.joblib")
-tb_model = load("Build Models/Copd.joblib")
+heart_model = load("models/ckd_model.joblib")
+kidney_model = load("models/ckd_model.joblib")
+stroke_model = load("models/stroke_model.joblib")
+copd_model = load("models/Copd.joblib")
+tb_model = load("models/TB_model.joblib")
+
+medical_or_not_model = load_model('models/medical_or_not_model.keras')
+types_of_medical_model = load_model('models/types_of_medical_model.keras')
+CT_categorys_model = load_model('models/CT_categors_model.keras')
+chest_CT_Model = load_model('models/chest_ct_model.keras')
+kidney_CT_Model = load_model('models/kidney_CT_model.keras')
+X_ray_categorys_model = load_model('models/X_ray_category_model.keras')
+chest_x_ray_model = load_model('models/chest_x_ray_model.keras')
+elbow_x_ray_model = load_model('models/elbow_x_ray_model.keras')
+foream_x_ray_model = load_model('models/foreaam_x_ray_model.keras')
+hand_x_ray_model = load_model('models/hand_model.keras')
+humerus_x_raay_model = load_model('models/humerus_model.keras')
+brain_mri_model = load_model('models/Brain_tumor_model.keras')
+
 
 
 templates = Jinja2Templates(directory="templates")
@@ -89,16 +111,28 @@ async def kidney_disease(request:Request):
 async def stroke(requerst:Request):
 
     return templates.TemplateResponse(name="stroke.html",request=requerst,context={"prediction":None})
+
+@app.get("/copd_disease",response_class=HTMLResponse)
+async def copd(request:Request):
+
+    return templates.TemplateResponse(name="copd.html",request=request,context={'prediction':None})
+
+@app.get("/td_disease",response_class=HTMLResponse)
+async def td_disease(request:Request):
+
+    return templates.TemplateResponse(request=request,name="TB_disease.html",context={"prediction":None})
+
+@app.get("/image_diagnosis",response_class=HTMLResponse)
+async def image_diagnosis(request:Request):
+
+    return templates.TemplateResponse(request=request,name="image_diagnosis.html")
 # MongoDB Connection
 
 client = MongoClient("mongodb://localhost:27017")
 db = client["medical_ai_database"]
 user_collection = db["usersDataCollection"]
 
-# Handle form submission
-@app.post("/")
-def welcome():
-    return "hello "
+# Handle POST DATA
 
 @app.post("/register")
 async def register_data(
@@ -118,7 +152,7 @@ async def register_data(
         encoded_face_data = face_recognition.face_encodings(image,face_detect)
         
         encoded_face_data = encoded_face_data[0].tolist()
-        check_email = await user_collection.find_one({"email":email})
+        check_email =  user_collection.find_one({"email":email})
 
         if check_email:
             return "emial is already existed"
@@ -132,7 +166,7 @@ async def register_data(
             "face_encoding":encoded_face_data
         }
 
-        await user_collection.insert_one(user_data)
+        user_collection.insert_one(user_data)
 
         return "done"
     
@@ -309,19 +343,19 @@ async def predict_ckd(request:Request,
 @app.post("/predict_stroke")
 async def predict_stroke(request:Request,
                         Age : int = Form(...),
-                        Gender : str = Form(...),
+                        Gender : int = Form(...),
                         BMI : float = Form(...),
                         Hypertension : int = Form(...),
                         Diabetes : int = Form(...),
                         Heart_disease : int = Form(...),
                         Smoking : int = Form(...),
-                        Alcohol_use : float = Form(...),
+                        Alcohol_use : int = Form(...),
                         Cholesterol : float = Form(...),
                         Blood_glucose : float = Form(...),
-                        Oxygen_saturation : int = Form(...),
-                        Systolic_BP : float = Form(...),
-                        Diastolic_BP : float = Form(...),
-                        Arm_weakness : float = Form(...),
+                        Oxygen_saturation : float = Form(...),
+                        Systolic_BP : int = Form(...),
+                        Diastolic_BP : int = Form(...),
+                        Arm_weakness : int = Form(...),
                         Leg_weakness : int = Form(...),
                         Speech_difficulty : int = Form(...),
                         Confusion : int = Form(...),
@@ -336,6 +370,285 @@ async def predict_stroke(request:Request,
     prediction = stroke_model.predict(user_data)
     return templates.TemplateResponse(name="stroke.html",request=request,context={"prediction":prediction})
 
+@app.post("/predict_copd")
+async def predict_copd(request:Request,
+                        Age : int = Form(...),
+                        Gender : int = Form(...),
+                        BMI : float = Form(...),
+                        Smoking_Status : int = Form(...),
+                        Pack_Years : int = Form(...),
+                        Secondhand_Smoke_Exposure : int = Form(...),
+                        Occupational_Dust_Exposure : int = Form(...),
+                        Air_Pollution_Exposure : int = Form(...),
+                        Family_History_COPD : int = Form(...),
+                        Asthma : int = Form(...),
+                        Hypertension : int = Form(...),
+                        Diabetes : int = Form(...),
+                        Chronic_Cough : int = Form(...),
+                        Sputum_Production : int = Form(...),
+                        Wheezing : int = Form(...),
+                        Shortness_of_Breath : int = Form(...),
+                        Oxygen_Saturation : int = Form(...),
+                        Physical_Activity : int = Form(...),
+                        FEV1_Percent_Predicted : float = Form(...)):
+    
+    columns = ['Age', 'Gender', 'BMI', 'Smoking_Status', 'Pack_Years','Secondhand_Smoke_Exposure', 'Occupational_Dust_Exposure','Air_Pollution_Exposure', 'Family_History_COPD', 'Asthma','Hypertension', 'Diabetes', 'Chronic_Cough', 'Sputum_Production','Wheezing', 'Shortness_of_Breath', 'Oxygen_Saturation','Physical_Activity', 'FEV1_Percent_Predicted']
+    user_data = pd.DataFrame([[Age,Gender,BMI,Smoking_Status,Pack_Years,Secondhand_Smoke_Exposure,Occupational_Dust_Exposure,Air_Pollution_Exposure,Family_History_COPD,Asthma,Hypertension,Diabetes,Chronic_Cough,Sputum_Production,Wheezing,Shortness_of_Breath,Oxygen_Saturation,Physical_Activity,FEV1_Percent_Predicted]],columns=columns)
+    prediction = copd_model.predict(user_data)
+    return templates.TemplateResponse(request=request, name="copd.html", context={"prediction":prediction})
+
+@app.post('/predict_tb')
+async def predict_TB(request:Request,
+                    Age : int = Form(...),
+                    Gender : int = Form(...),
+                    BMI : float = Form(...),
+                    Smoking : int = Form(...),
+                    Alcohol_Use : int = Form(...),
+                    HIV : int = Form(...),
+                    Diabetes : int = Form(...),
+                    Previous_TB : int = Form(...),
+                    Household_TB_Contact : int = Form(...),
+                    Persistent_Cough : int = Form(...),
+                    Cough_Duration_Days : int = Form(...),
+                    Blood_in_Sputum : int = Form(...),
+                    Chest_Pain : int = Form(...),
+                    Fever : int = Form(...),
+                    Night_Sweats : int = Form(...),
+                    Weight_Loss : int = Form(...),
+                    Fatigue : int = Form(...),
+                    Appetite_Loss : int = Form(...),
+                    Oxygen_Saturation : int = Form(...),
+                    ESR : float = Form(...),
+                    WBC_Count : float = Form(...),
+                    Chest_Xray_Result : int = Form(...),
+                    Socioeconomic_Status : int = Form(...),
+                    GeneXpert_Result : str = Form(...)
+    ):
+    encoder = load("models/GeneXpert_Result_encoder.joblib")
+    scaler = load("models/TB_scaler.joblib")
+    columns = ['Age', 'Gender', 'BMI', 'Smoking', 'Alcohol_Use', 'HIV', 'Diabetes','Previous_TB', 'Household_TB_Contact', 'Persistent_Cough','Cough_Duration_Days', 'Blood_in_Sputum', 'Chest_Pain', 'Fever','Night_Sweats', 'Weight_Loss', 'Fatigue', 'Appetite_Loss','Oxygen_Saturation', 'ESR', 'WBC_Count', 'Chest_Xray_Result','Socioeconomic_Status']
+    WBC_Count *= 1000
+    encoder_data = encoder.transform(pd.DataFrame([[GeneXpert_Result]],columns=["GeneXpert_Result"]))
+    encoder_df = pd.DataFrame(encoder_data,columns=encoder.get_feature_names_out())
+    user_data = pd.DataFrame([[Age,Gender,BMI,Smoking,Alcohol_Use,HIV,Diabetes,Previous_TB,Household_TB_Contact,Persistent_Cough,Cough_Duration_Days,Blood_in_Sputum,Chest_Pain,Fever,Night_Sweats,Weight_Loss,Fatigue,Appetite_Loss,Oxygen_Saturation,ESR,WBC_Count,Chest_Xray_Result,Socioeconomic_Status]],columns=columns)
+    user_data = pd.concat([user_data,encoder_df],axis=1)
+    scaler_data = scaler.transform(user_data)
+    prediction = tb_model.predict(scaler_data)
+    prediction = (prediction > 0.5).astype(int)
+
+    return templates.TemplateResponse(request=request,name="TB_disease.html",context={"prediction":prediction})
+
+@app.post("/image_diagnosis")
+async def image_ditection(
+    request : Request,
+    imageInput: UploadFile = File(...)
+):  
+                        # models
+
+    image_bytes = await imageInput.read()
+
+    image_url = (
+        "data:"
+        + imageInput.content_type
+        + ";base64,"
+        + base64.b64encode(image_bytes).decode("utf-8")
+    )
+
+    image = tf.io.decode_image(image_bytes,channels=3,expand_animations=False)
+
+    mediacl_or_not_image = tf.image.resize(image, (224, 224))
+
+    mediacl_or_not_image = tf.expand_dims(mediacl_or_not_image, axis=0)
+
+    preprocess_img = applications.efficientnet_v2.preprocess_input(mediacl_or_not_image)
+
+    medical_or_not_prob = medical_or_not_model.predict(preprocess_img)
+
+    medical_or_not_pred = (medical_or_not_prob >= 0.5).astype(int)
+
+    if medical_or_not_pred[0][0] == 0:
+        predication = types_of_medical_model.predict(preprocess_img)
+        predication = np.argmax(predication,axis=1)
+        print(predication)
+
+        if predication[0] == 0:
+            print('CT')
+            CT_prediction = CT_categorys_model.predict(preprocess_img)
+            CT_prediction = (CT_prediction >= 0.5).astype(int)
+            print(CT_prediction)
+
+            if CT_prediction[0][0] == 0:
+                print('Chest_CT')
+                pred = chest_CT_Model.predict(preprocess_img)
+                probability = float(pred[0][0])
+                
+                if probability >= 0.5:
+                    label = "Normal"
+                    confidence = probability
+
+                else:
+                    label = "Abnormal"
+                    confidence = 1 - probability
+                print(confidence,label)
+
+            else:
+                print('Kidney_ct')
+                pred = kidney_CT_Model.predict(preprocess_img)
+                pred = (pred >=0.5).astype(int)
+                probability = float(pred[0][0])
+                                
+                if probability >= 0.5:
+                    label = "Normal"
+                    confidence = probability
+
+                else:
+                    label = "Abnormal"
+                    confidence = 1 - probability
+                print(confidence,label)
+
+
+        elif predication[0] == 1:
+            print("MRI")
+
+            pred = brain_mri_model.predict(preprocess_img)
+            probability = float(pred[0][0])
+                            
+            if probability >= 0.5:
+                label = "Normal"
+                confidence = probability
+
+            else:
+                label = "Abnormal"
+                confidence = 1 - probability
+            print(confidence,label)
+
+
+        else:
+            print('X-Ray')
+            x_ray_predication = X_ray_categorys_model.predict(preprocess_img)
+            x_ray_predication = np.argmax(x_ray_predication,axis=1)
+
+            if x_ray_predication[0] == 0:
+                print('chest x-ray')
+
+                mediacl_or_not_image = mediacl_or_not_image.numpy()
+
+                img = clahe.clahe_preprocess(mediacl_or_not_image.squeeze(),applications.efficientnet_v2.preprocess_input)
+                img = np.expand_dims(img,axis=0)
+
+                pred = chest_x_ray_model.predict(img)
+                probability = float(pred[0][0])
+
+                if probability >= 0.5:
+                    label = "Normal"
+                    confidence = probability
+
+                else:
+                    label = "Abnormal"
+                    confidence = 1 - probability
+                print(confidence,label)
+
+            elif x_ray_predication[0] == 1:
+
+                print('elbow')
+
+                mediacl_or_not_image = mediacl_or_not_image.numpy()
+                
+                img = clahe.clahe_preprocess(mediacl_or_not_image.squeeze(),applications.mobilenet_v3.preprocess_input)
+                img = np.expand_dims(img,axis=0)
+
+                pred = elbow_x_ray_model.predict(img)
+                probability = float(pred[0][0])
+
+                if probability >= 0.5:
+                    label = "Normal"
+                    confidence = probability
+
+                else:
+                    label = "Abnormal"
+                    confidence = 1 - probability
+                print(confidence,label)
+
+            elif x_ray_predication[0] == 2:
+                print('forearm')
+                img = tf.image.resize(image, (256,256))
+                mediacl_or_not_image = img.numpy()
+
+                img = clahe.clahe_preprocess(mediacl_or_not_image,applications.efficientnet_v2.preprocess_input)
+                img = np.expand_dims(img,axis=0)
+                pred = foream_x_ray_model.predict(img)
+                probability = float(pred[0][0])
+
+                if probability >= 0.5:
+                    label = "Normal"
+                    confidence = probability
+
+                else:
+                    label = "Abnormal"
+                    confidence = 1 - probability
+                print(confidence,label)
+
+            elif x_ray_predication[0] == 3:
+                print('hand')
+                mediacl_or_not_image = mediacl_or_not_image.numpy()
+                
+                img = clahe.clahe_preprocess(mediacl_or_not_image.squeeze(),applications.densenet.preprocess_input)
+                img = np.expand_dims(img,axis=0)
+                pred = hand_x_ray_model.predict(img)
+                probability = float(pred[0][0])
+
+                if probability >= 0.5:
+                    label = "Normal"
+                    confidence = probability
+
+                else:
+                    label = "Abnormal"
+                    confidence = 1 - probability
+                print(confidence,label)
+
+            elif x_ray_predication[0] == 4:
+                print('humerus')
+                mediacl_or_not_image = mediacl_or_not_image.numpy()
+
+                img = clahe.clahe_preprocess(mediacl_or_not_image.squeeze(),applications.efficientnet_v2.preprocess_input)
+                img = np.expand_dims(img,axis=0)
+                pred = humerus_x_raay_model.predict(img)
+                probability = float(pred[0][0])
+
+                if probability >= 0.5:
+                    label = "Normal"
+                    confidence = probability
+
+                else:
+                    label = "Abnormal"
+                    confidence = 1 - probability
+                print(confidence,label)
+
+            else:
+                print('shoulder')
+                img = clahe.clahe_preprocess(mediacl_or_not_image,applications.efficientnet_v2.preprocess_input)
+
+#             {'chest x-ray': 0,
+            #  'elbow': 1,
+            #  'forearm': 2,
+            #  'hand': 3,
+            #  'humerus': 4,
+            #  'shoulder': 5}
+            # {'CT': 0, 'MRI': 1, 'X-Ray': 2}
+        return  templates.TemplateResponse(request=request,name='result.html', context={"result": {
+            "medical": True,
+            "model2Prediction": label,
+            "model2Confidence": confidence * 100
+        },
+        "image_url": image_url
+        })
+
+
+    else:
+        print('Non medical')
+
+        return templates.TemplateResponse(request=request, name = 'result.html', context={"result": {"medical": False},"image_url": image_url} )
+    
 
 
 

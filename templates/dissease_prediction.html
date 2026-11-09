@@ -1,61 +1,129 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
 <head>
-    <title>Cards</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSource AI | Dashboard</title>
     <link rel="stylesheet" href="static/css/diseas_prediction_style.css">
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
+
 <body>
-<a href="/home" class="back-btn">← Back</a>
 
-<h1>Dashboard</h1>
+<header class="header">
+    
+    
+        <div class="logo">
+            <span class="logo-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </span>
 
-<div class="container">
+            <span>MedSource <strong>AI</strong></span>
+        </div>
+    <a href="/home" class="back-btn">← Back to Home</a>
+</header>
 
-    <div class="card card_1">
-        
-        <p>Heart Disease Prediction</p>
-        <button onclick="window.location.href='/heart_disease';">Open</button>
+<main class="main">
+
+    <section class="heading">
+        <span class="tag">MEDICAL AI PLATFORM</span>
+        <h1>Prediction Dashboard</h1>
+        <p>
+            Explore AI-powered disease prediction tools.
+            Select a prediction service to get started.
+        </p>
+    </section>
+
+    <div class="container">
+
+        <!-- Heart Disease -->
+        <div class="card">
+            <div class="icon">❤️</div>
+            <h3>Heart Disease</h3>
+            <p>
+                Analyze health parameters and estimate
+                the risk of heart disease using machine learning.
+            </p>
+            <button class="open-btn"
+                onclick="window.location.href='/heart_disease'">
+                Open Prediction →
+            </button>
+        </div>
+
+        <!-- Kidney Disease -->
+        <div class="card">
+            <div class="icon">🫘</div>
+            <h3>Chronic Kidney Disease</h3>
+            <p>
+                Evaluate important health indicators to
+                estimate the risk of chronic kidney disease.
+            </p>
+            <button class="open-btn"
+                onclick="window.location.href='/kidney_disease'">
+                Open Prediction →
+            </button>
+        </div>
+
+        <!-- Stroke -->
+        <div class="card">
+            <div class="icon">🧠</div>
+            <h3>Stroke Prediction</h3>
+            <p>
+                Analyze patient health information and
+                estimate potential stroke risk.
+            </p>
+            <button class="open-btn"
+                onclick="window.location.href='/stroke'">
+                Open Prediction →
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="icon">🫁</div>
+            <h3>COPD Prediction</h3>
+            <p>
+                Evaluate health parameters associated with
+                Chronic Obstructive Pulmonary Disease.
+            </p>
+            <button class="open-btn"
+                onclick="window.location.href='/copd_disease'">
+                Open Prediction →
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="icon">🩻</div>
+            <h3>Tuberculosis Prediction</h3>
+            <p>
+                Use patient information to estimate the
+                possibility of tuberculosis.
+            </p>
+            <button class="open-btn"
+                onclick="window.location.href='/td_disease'">
+                Open Prediction →
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="icon">🧬</div>
+            <h3>HIV Prediction</h3>
+            <p>
+                Evaluate relevant health information, symptoms, and
+                clinical parameters to estimate HIV-related risk.
+            </p>
+            <button class="open-btn" onclick="window.location.href='/hiv'">Open Prediction →</button>
+        </div>
+
+
     </div>
+</main>
 
-    <div class="card card_2">
-        <p>Chronic Kidney Disease Prediction.</p>
-        <button onclick="window.location.href='/kidney_disease';">Open</button>
-    </div>
-
-    <div class="card card_3">
-        <p>Storke Prediction.</p>
-        <button onclick="window.location.href='/stroke';">Open</button>
-    </div>
-
-    <div class="card card_4">
-        <p>Chronic Obstructive Pulmonary Disease Prediction.</p>
-        <button onclick="window.location.href='/copd_disease';">Open</button>
-    </div>
-
-    <div class="card card_5">
-        <p >Tuberculosis Prediction.</p>
-        <button onclick="window.location.href='/td_disease';">Open</button>
-    </div>
-
-    <div class="card">
-        <h3>Card 6</h3>
-        <p>Description here.</p>
-        <button>Open</button>
-    </div>
-
-    <div class="card">
-        <h3>Card 7</h3>
-        <p>Description here.</p>
-        <button>Open</button>
-    </div>
-
-    <div class="card">
-        <h3>Card 8</h3>
-        <p>Description here.</p>
-        <button>Open</button>
-    </div>
-
-</div>
+<footer class="footer">
+    © 2026 MedSource AI. AI-assisted healthcare information platform.
+    <br><br>
+    Predictions are for informational purposes only and are not a substitute for professional medical advice.
+</footer>
 
 </body>
 </html>

@@ -1,295 +1,548 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction Form</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            padding: 30px;
-        }
+    <title>Heart Disease Prediction</title>
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h1{
-            text-align:center;
-            color:#0d6efd;
-            margin-bottom:25px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .btn-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        button {
-            padding: 12px 30px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #0056b3;
-        }
-
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 18px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-        }
-        .back-btn:hover {
-            background-color: #0056b3;
-        }
-        .message_box{
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet"
+          href="static/css/medical_prediction.css">
 </head>
+
+
 <body>
 
-    
+<div class="page-container">
 
+    <a href="/disease_prediction" class="back-btn"> ← Back </a>
 
-</style>
-</head>
-<body>
-
-
-</body>
-</html>
-
-
-<div class="container">
-    <a href="/disease_prediction" class="back-btn">← Back</a>
-
-    <h1>Heart Disease Prediction System</h1>
-
-    <form action="/predict_heart_disease" method="post">
-
-        <div class="form-grid">
-
-            <div class="input-group">
-                <label>Do you experience chest pain?</label>
-                <select name="Chest_Pain" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-                <!-- <input type="" name="feature1" required> -->
-            </div>
-            <div class="input-group">
-                <label>Do you experience shortness of breath?</label>
-                <select name="Shortness_of_Breath" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you often feel fatigued or tired?</label>
-                <select name="Fatigue" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you experience heart palpitations?</label>
-                <select name="Palpitations" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you experience dizziness?</label>
-                <select name="Dizziness" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you have swelling in your legs, ankles, or feet?</label>
-                <select name="Swelling" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you have pain in your arms, jaw, or back?</label>
-                <select name="Pain_Arms_Jaw_Back" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you experience cold sweats or nausea?</label>
-                <select name="Cold_Sweats_Nausea" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you have high blood pressure?</label>
-                <select name="High_BP" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you have high cholesterol?</label>
-                <select name="High_Cholesterol" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you have diabetes?</label>
-                <select name="Diabetes" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you smoke?</label>
-                <select name="Smoking" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Are you overweight or obese?</label>
-                <select name="Obesity" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you have a sedentary lifestyle (little physical activity)?</label>
-                <select name="Sedentary_Lifestyle" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you have a family history of heart disease?</label>
-                <select name="Family_History" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Do you experience chronic stress?</label>
-                <select name="Chronic_Stress" id="" required>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Gender</label>
-                <select name="Gender" id="" required>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Age (Years)</label>
-                <input type="number" name="Age" required max="120">
-            </div>
-
-        </div>
-
-        <div class="btn-container">
-            <button type="submit">Predict</button>
-        </div>
-
-    </form>
-</div>
-<div class="message_box">
     {% if prediction is not none %}
 
         {% if prediction == 1 %}
-            <h2 style="color:red;">
-            ⚠️ Prediction Result: Higher Risk of Heart Disease Detected
-            </h2>
 
-            <p>
-            Based on the information provided, the model indicates a higher likelihood of heart disease.
-            Please consult a healthcare professional for proper medical evaluation and diagnosis.
-            </p>
+        <div class="result-section high-risk">
+
+            <div class="result-icon">
+                ⚠
+            </div>
+
+            <div>
+
+                <h2>
+                    Heart Disease Risk Detected
+                </h2>
+
+                <div class="prediction-result">
+                    Higher Risk of Heart Disease
+                </div>
+
+                <div class="confidence">
+                    Based on the information provided,
+                    the model indicates a higher likelihood
+                    of heart disease.
+                </div>
+
+            </div>
+
+        </div>
+
         {% else %}
-            <h2 style="color:green;">
-            ✅ Prediction Result: Lower Risk of Heart Disease
-            </h2>
 
-            <p>
-            Based on the information provided, the model indicates a lower likelihood of heart disease.
-            Continue maintaining a healthy lifestyle and attend regular medical checkups.
-            </p>
+        <div class="result-section low-risk">
+
+            <div class="result-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <h2>
+                    Lower Heart Disease Risk
+                </h2>
+
+                <div class="prediction-result">
+                    Lower Risk of Heart Disease
+                </div>
+
+                <div class="confidence">
+                    Based on the information provided,
+                    the model indicates a lower likelihood
+                    of heart disease.
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+    {% endif %}
+
+
+    <div class="prediction-card">
+
+
+        <div class="page-header">
+
+            <div class="medical-icon">
+                ❤️
+            </div>
+
+            <div>
+                <h1>Heart Disease Prediction</h1>
+
+                <p>
+                    Enter the patient's information below to assess
+                    the risk of heart disease.
+                </p>
+            </div>
+
+        </div>
+
+
+        <form action="/predict_heart_disease" method="post">
+
+
+
+            <div class="section">
+
+                <div class="section-title">
+
+                    <span>1</span>
+
+                    <h2>Symptoms</h2>
+
+                </div>
+
+
+                <p class="section-description">
+                    Select Yes or No for the symptoms experienced
+                    by the patient.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <!-- Chest Pain -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you experience chest pain?
+                        </label>
+
+                        <select name="Chest_Pain" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Shortness of Breath -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you experience shortness of breath?
+                        </label>
+
+                        <select name="Shortness_of_Breath" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Fatigue -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you often feel fatigued or tired?
+                        </label>
+
+                        <select name="Fatigue" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Palpitations -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you experience heart palpitations?
+                        </label>
+
+                        <select name="Palpitations" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Dizziness -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you experience dizziness?
+                        </label>
+
+                        <select name="Dizziness" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Swelling -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you have swelling in your legs, ankles, or feet?
+                        </label>
+
+                        <select name="Swelling" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Arm/Jaw/Back Pain -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you have pain in your arms, jaw, or back?
+                        </label>
+
+                        <select name="Pain_Arms_Jaw_Back" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Cold Sweats/Nausea -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you experience cold sweats or nausea?
+                        </label>
+
+                        <select name="Cold_Sweats_Nausea" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 RISK FACTORS
+            ========================================= -->
+
+            <div class="section">
+
+                <div class="section-title">
+
+                    <span>2</span>
+
+                    <h2>Risk Factors</h2>
+
+                </div>
+
+
+                <p class="section-description">
+                    Provide information about the patient's
+                    existing health and lifestyle risk factors.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <!-- High BP -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you have high blood pressure?
+                        </label>
+
+                        <select name="High_BP" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Cholesterol -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you have high cholesterol?
+                        </label>
+
+                        <select name="High_Cholesterol" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Diabetes -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you have diabetes?
+                        </label>
+
+                        <select name="Diabetes" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Smoking -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you smoke?
+                        </label>
+
+                        <select name="Smoking" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Obesity -->
+                    <div class="form-group">
+
+                        <label>
+                            Are you overweight or obese?
+                        </label>
+
+                        <select name="Obesity" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Sedentary -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you have a sedentary lifestyle?
+                        </label>
+
+                        <select name="Sedentary_Lifestyle" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Family History -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you have a family history of heart disease?
+                        </label>
+
+                        <select name="Family_History" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Stress -->
+                    <div class="form-group">
+
+                        <label>
+                            Do you experience chronic stress?
+                        </label>
+
+                        <select name="Chronic_Stress" required>
+
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 BASIC INFORMATION
+            ========================================= -->
+
+            <div class="section">
+
+                <div class="section-title">
+
+                    <span>3</span>
+
+                    <h2>Basic Information</h2>
+
+                </div>
+
+
+                <p class="section-description">
+                    Enter basic patient information.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <!-- Gender -->
+                    <div class="form-group">
+
+                        <label>
+                            Gender
+                        </label>
+
+                        <select name="Gender" required>
+
+                            <option value="male">
+                                Male
+                            </option>
+
+                            <option value="female">
+                                Female
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Age -->
+                    <div class="form-group">
+
+                        <label>
+                            Age (Years)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="Age"
+                            min="1"
+                            max="120"
+                            placeholder="Enter age"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 PREDICT BUTTON
+            ========================================= -->
+
+            <div class="button-container">
+
+                <button type="submit" class="predict-btn">
+
+                    <span class="btn-icon">🔍</span>
+
+                    Predict Heart Disease Risk
+
+                </button>
+
+            </div>
+
+        </form>
+
+
+        {% if prediction is not none %}
+
+            <div class="medical-disclaimer">
+
+                <strong>
+                    ⚕ Medical Disclaimer
+                </strong>
+
+                <p>
+                    This prediction is generated by a machine learning
+                    model and is intended for informational purposes only.
+                    It should not be considered a medical diagnosis.
+                    Please consult a qualified healthcare professional
+                    for proper medical evaluation and diagnosis.
+                </p>
+
+            </div>
+
         {% endif %}
 
-    {% endif %}
+
+    </div>
+
 </div>
+
 </body>
 </html>

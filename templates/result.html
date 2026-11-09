@@ -1,541 +1,1344 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Medical AI Analysis</title>
 
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
     <style>
+
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f3f8fa;
-            color: #20343b;
-            min-height: 100vh;
+
+        :root {
+
+            --primary: #0878f9;
+
+            --primary-dark: #0667d8;
+
+            --primary-light: #eaf3ff;
+
+            --primary-soft: #f2f7ff;
+
+            --text: #172033;
+
+            --muted: #66758a;
+
+            --border: #dbe7f4;
+
+            --background: #f5f9ff;
+
+            --white: #ffffff;
+
         }
 
-        /* ---------- HEADER ---------- */
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5f9ff 0%,
+                    #eef6ff 100%
+                );
+
+            color: var(--text);
+
+            min-height: 100vh;
+
+            padding-bottom: 55px;
+
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
 
         .header {
-            background: white;
-            border-bottom: 1px solid #dce8eb;
-            padding: 22px 7%;
+
+            height: 72px;
+
+            background:
+                rgba(255, 255, 255, 0.97);
+
+            border-bottom:
+                1px solid var(--border);
+
+            padding:
+                0 5%;
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
+            box-shadow:
+                0 4px 18px rgba(8, 120, 249, 0.06);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            backdrop-filter: blur(10px);
+
         }
+
+
+        /* =====================================================
+           BRAND — LEFT
+        ===================================================== */
 
         .brand {
+
             display: flex;
+
             align-items: center;
-            gap: 12px;
+
+            gap: 11px;
+
         }
+
 
         .medical-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            background: #e5f5f5;
-            color: #16858a;
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 10px;
+
+            background: var(--primary-light);
+
+            color: var(--primary);
+
+            border:
+                1px solid #d3e7ff;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
-            font-size: 25px;
-            font-weight: bold;
+
+            font-size: 20px;
+
         }
+
 
         .brand h1 {
-            font-size: 21px;
-            color: #18383f;
+
+            font-size: 20px;
+
+            color: var(--text);
+
+            font-weight: 700;
+
+            letter-spacing: -0.3px;
+
         }
+
 
         .brand p {
-            font-size: 12px;
-            color: #71868c;
+
+            font-size: 11px;
+
+            color: #75849a;
+
             margin-top: 3px;
+
         }
+
+
+        /* =====================================================
+           BACK BUTTON — RIGHT
+        ===================================================== */
+
+        .header-right {
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        .header-back {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            text-decoration: none;
+
+            background: #ffffff;
+
+            color: #52647a;
+
+            border:
+                1px solid #d5e3f1;
+
+            padding:
+                9px 15px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .header-back i {
+
+            font-size: 12px;
+
+        }
+
+
+        .header-back:hover {
+
+            color: var(--primary);
+
+            border-color: var(--primary);
+
+            background: var(--primary-light);
+
+            transform:
+                translateX(2px);
+
+        }
+
+
+        /* =====================================================
+           AI BADGE
+        ===================================================== */
 
         .ai-badge {
-            background: #edf8f7;
-            color: #167b80;
-            border: 1px solid #ccebea;
-            padding: 8px 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            background: var(--primary-light);
+
+            color: var(--primary);
+
+            border:
+                1px solid #cfe3fa;
+
+            padding:
+                7px 12px;
+
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            margin-right: 14px;
+
         }
 
-        /* ---------- MAIN ---------- */
+
+        .ai-badge i {
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
 
         .container {
+
             width: 90%;
+
             max-width: 1050px;
-            margin: 40px auto 100px;
+
+            margin:
+                40px auto 80px;
+
         }
+
+
+        /* =====================================================
+           PAGE TITLE
+        ===================================================== */
 
         .page-title {
+
             margin-bottom: 25px;
+
         }
+
 
         .page-title h2 {
+
             font-size: 28px;
-            color: #18383f;
+
+            color: var(--text);
+
             margin-bottom: 7px;
+
+            font-weight: 700;
+
         }
+
+
+        .page-title h2::after {
+
+            content: "";
+
+            display: block;
+
+            width: 42px;
+
+            height: 3px;
+
+            background: var(--primary);
+
+            border-radius: 5px;
+
+            margin-top: 9px;
+
+        }
+
 
         .page-title p {
-            color: #71868c;
+
+            color: var(--muted);
+
             font-size: 14px;
+
+            margin-top: 10px;
+
         }
+
+
+        /* =====================================================
+           DASHBOARD
+        ===================================================== */
 
         .dashboard {
+
             display: grid;
-            grid-template-columns: 1fr 1.1fr;
+
+            grid-template-columns:
+                1fr 1.1fr;
+
             gap: 25px;
+
         }
 
-        /* ---------- IMAGE CARD ---------- */
+
+        /* =====================================================
+           CARDS
+        ===================================================== */
 
         .image-card,
         .result-card {
-            background: white;
-            border: 1px solid #dce8eb;
-            border-radius: 18px;
-            box-shadow: 0 8px 25px rgba(40, 80, 90, 0.06);
+
+            background: var(--white);
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(8, 75, 150, 0.07);
+
+            overflow: hidden;
+
         }
+
+
+        /* =====================================================
+           CARD HEADER
+        ===================================================== */
 
         .card-header {
-            padding: 20px 22px;
-            border-bottom: 1px solid #edf2f3;
+
+            padding:
+                20px 22px;
+
+            border-bottom:
+                1px solid #edf2f8;
+
+            background:
+                #ffffff;
+
         }
+
 
         .card-header h3 {
+
             font-size: 15px;
-            color: #29454c;
+
+            color: #25364d;
+
+            font-weight: 700;
+
         }
+
 
         .card-header span {
+
             display: block;
-            color: #8a9da2;
+
+            color: #8491a3;
+
             font-size: 12px;
-            margin-top: 4px;
+
+            margin-top: 5px;
+
         }
+
+
+        /* =====================================================
+           IMAGE AREA
+        ===================================================== */
 
         .image-area {
+
             padding: 22px;
+
         }
+
 
         .image-box {
+
             height: 350px;
-            background: #f1f5f6;
-            border-radius: 14px;
+
+            background:
+                #f4f8fc;
+
+            border-radius: 13px;
+
             overflow: hidden;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
-            border: 1px solid #e1eaec;
+
+            border:
+                1px solid #e1eaf3;
+
         }
+
 
         .image-box img {
+
             width: 100%;
+
             height: 100%;
+
             object-fit: contain;
+
         }
+
 
         .no-image {
-            color: #84979c;
+
+            color: #8493a5;
+
             font-size: 14px;
+
         }
 
-        /* ---------- RESULT CARD ---------- */
+
+        /* =====================================================
+           RESULT CONTENT
+        ===================================================== */
 
         .result-content {
+
             padding: 25px;
+
         }
+
+
+        /* =====================================================
+           RESULT STATUS
+        ===================================================== */
 
         .result-status {
+
             display: flex;
+
             align-items: center;
+
             gap: 15px;
+
             margin-bottom: 25px;
+
         }
+
 
         .status-icon {
+
             width: 58px;
+
             height: 58px;
+
             border-radius: 50%;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
-            font-size: 25px;
+
+            font-size: 22px;
+
             font-weight: bold;
+
+            flex-shrink: 0;
+
         }
+
 
         .result-status h2 {
+
             font-size: 25px;
+
             margin-bottom: 5px;
+
         }
+
 
         .result-status p {
+
             font-size: 13px;
-            color: #74878c;
+
+            color: #748399;
+
         }
 
-        /* ---------- NORMAL ---------- */
+
+        /* =====================================================
+           NORMAL
+        ===================================================== */
 
         .normal .status-icon {
-            background: #e6f6ee;
-            color: #21865a;
+
+            background:
+                #eaf3ff;
+
+            color:
+                var(--primary);
+
         }
+
 
         .normal .result-status h2 {
-            color: #21865a;
+
+            color:
+                var(--primary);
+
         }
 
-        /* ---------- ABNORMAL ---------- */
+
+        /* =====================================================
+           ABNORMAL
+        ===================================================== */
 
         .abnormal .status-icon {
-            background: #fff0ed;
-            color: #c65b4d;
+
+            background:
+                #fff0ed;
+
+            color:
+                #d45b4e;
+
         }
+
 
         .abnormal .result-status h2 {
-            color: #bd5145;
+
+            color:
+                #c65348;
+
         }
 
-        /* ---------- NON MEDICAL ---------- */
+
+        /* =====================================================
+           NON MEDICAL
+        ===================================================== */
 
         .nonmedical .status-icon {
-            background: #fff5df;
-            color: #b27a21;
+
+            background:
+                #fff5df;
+
+            color:
+                #b27820;
+
         }
+
 
         .nonmedical .result-status h2 {
-            color: #a46d18;
+
+            color:
+                #a56d18;
+
         }
+
+
+        /* =====================================================
+           MESSAGE BOX
+        ===================================================== */
 
         .message-box {
-            padding: 17px;
-            border-radius: 12px;
-            background: #f7fafb;
-            border: 1px solid #e6edef;
-            color: #52676d;
-            font-size: 14px;
-            line-height: 1.7;
+
+            padding:
+                17px;
+
+            border-radius:
+                12px;
+
+            background:
+                #f6f9fd;
+
+            border:
+                1px solid #e3ebf4;
+
+            color:
+                #53647a;
+
+            font-size:
+                14px;
+
+            line-height:
+                1.7;
+
         }
 
-        /* ---------- CONFIDENCE ---------- */
+
+        /* =====================================================
+           CONFIDENCE
+        ===================================================== */
 
         .confidence-card {
-            margin-top: 22px;
-            padding: 18px;
-            background: #f8fbfc;
-            border-radius: 12px;
-            border: 1px solid #e4edef;
+
+            margin-top:
+                22px;
+
+            padding:
+                18px;
+
+            background:
+                #f7faff;
+
+            border-radius:
+                12px;
+
+            border:
+                1px solid #e1eaf5;
+
         }
+
 
         .confidence-top {
+
             display: flex;
+
             justify-content: space-between;
-            margin-bottom: 10px;
+
+            margin-bottom:
+                10px;
+
         }
+
 
         .confidence-label {
-            color: #64787e;
-            font-size: 13px;
+
+            color:
+                #65758a;
+
+            font-size:
+                13px;
+
         }
+
 
         .confidence-value {
-            color: #176f76;
-            font-weight: bold;
-            font-size: 14px;
+
+            color:
+                var(--primary);
+
+            font-weight:
+                bold;
+
+            font-size:
+                14px;
+
         }
+
 
         .confidence-bar {
+
             width: 100%;
+
             height: 9px;
-            background: #e1ebed;
-            border-radius: 10px;
+
+            background:
+                #e2eaf3;
+
+            border-radius:
+                10px;
+
             overflow: hidden;
+
         }
+
 
         .confidence-fill {
+
             height: 100%;
-            background: #27969b;
-            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #0878f9,
+                    #4da0ff
+                );
+
+            border-radius:
+                10px;
+
         }
 
-        /* ---------- INFO ---------- */
+
+        /* =====================================================
+           INFORMATION
+        ===================================================== */
 
         .info {
-            margin-top: 20px;
+
+            margin-top:
+                20px;
+
             display: flex;
+
             gap: 10px;
-            align-items: flex-start;
-            color: #71868c;
-            font-size: 12px;
-            line-height: 1.6;
+
+            align-items:
+                flex-start;
+
+            color:
+                #718096;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.6;
+
         }
+
 
         .info-icon {
+
             min-width: 20px;
+
             height: 20px;
+
             border-radius: 50%;
-            background: #e5f4f5;
-            color: #167d83;
+
+            background:
+                var(--primary-light);
+
+            color:
+                var(--primary);
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             font-weight: bold;
+
         }
 
-        /* ---------- BUTTON ---------- */
+
+        /* =====================================================
+           BUTTON
+        ===================================================== */
 
         .button-area {
-            margin-top: 25px;
+
+            margin-top:
+                25px;
+
         }
+
 
         .back-button {
+
             display: block;
+
             text-align: center;
+
             text-decoration: none;
-            background: #177f85;
-            color: white;
-            padding: 13px 20px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: bold;
-            transition: 0.2s;
+
+            background:
+                var(--primary);
+
+            color:
+                white;
+
+            padding:
+                13px 20px;
+
+            border-radius:
+                9px;
+
+            font-size:
+                14px;
+
+            font-weight:
+                bold;
+
+            transition:
+                0.2s ease;
+
+            box-shadow:
+                0 6px 16px
+                rgba(8, 120, 249, 0.18);
+
         }
+
 
         .back-button:hover {
-            background: #126d72;
+
+            background:
+                var(--primary-dark);
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 8px 20px
+                rgba(8, 120, 249, 0.25);
+
         }
 
-        /* ---------- FOOTER ---------- */
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
 
         .footer {
-            text-align: center;
-            margin-top: 28px;
-            color: #8a9a9f;
-            font-size: 11px;
+
+            text-align:
+                center;
+
+            margin-top:
+                28px;
+
+            color:
+                #8a98a8;
+
+            font-size:
+                11px;
+
         }
 
-        /* ---------- WARNING ---------- */
+
+        /* =====================================================
+           WARNING BAR
+        ===================================================== */
 
         .warning-bar {
+
             position: fixed;
+
             bottom: 0;
+
             left: 0;
+
             width: 100%;
+
             height: 38px;
-            background: #203b41;
-            color: #e9f4f5;
+
+            background:
+                #102b4a;
+
+            color:
+                #eaf3ff;
+
             overflow: hidden;
+
             display: flex;
+
             align-items: center;
+
             z-index: 100;
+
         }
+
 
         .warning-track {
+
             display: flex;
+
             width: max-content;
-            animation: scroll 28s linear infinite;
+
+            animation:
+                scroll 28s linear infinite;
+
         }
+
 
         .warning-track span {
-            margin-right: 100px;
-            font-size: 12px;
-            white-space: nowrap;
+
+            margin-right:
+                100px;
+
+            font-size:
+                12px;
+
+            white-space:
+                nowrap;
+
         }
 
+
         @keyframes scroll {
+
             from {
-                transform: translateX(100vw);
+
+                transform:
+                    translateX(100vw);
+
             }
 
             to {
-                transform: translateX(-100%);
+
+                transform:
+                    translateX(-100%);
+
             }
+
         }
 
-        /* ---------- MOBILE ---------- */
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
 
         @media (max-width: 800px) {
 
             .header {
-                padding: 18px 5%;
+
+                height: 64px;
+
+                padding:
+                    0 5%;
+
             }
+
 
             .ai-badge {
+
                 display: none;
+
             }
+
 
             .container {
+
                 width: 92%;
-                margin-top: 25px;
+
+                margin-top:
+                    25px;
+
             }
+
 
             .dashboard {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
+
             }
+
 
             .image-box {
-                height: 300px;
+
+                height:
+                    300px;
+
             }
 
+
             .page-title h2 {
-                font-size: 23px;
+
+                font-size:
+                    23px;
+
             }
+
         }
+
 
         @media (max-width: 450px) {
 
             .brand h1 {
-                font-size: 17px;
+
+                font-size:
+                    17px;
+
             }
+
+
+            .brand p {
+
+                font-size:
+                    10px;
+
+            }
+
 
             .medical-icon {
-                width: 40px;
-                height: 40px;
+
+                width:
+                    38px;
+
+                height:
+                    38px;
+
+                font-size:
+                    18px;
+
             }
 
-            .image-box {
-                height: 240px;
+
+            .header-back {
+
+                padding:
+                    8px 10px;
+
             }
+
+
+            .header-back span {
+
+                display:
+                    none;
+
+            }
+
+
+            .image-box {
+
+                height:
+                    240px;
+
+            }
+
+
+            .result-content {
+
+                padding:
+                    20px;
+
+            }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <!-- HEADER -->
 
-    <header class="header">
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-        <div class="brand">
+<header class="header">
 
-            <div class="medical-icon">
-                +
-            </div>
 
-            <div>
-                <h1>Medical AI</h1>
-                <p>AI-assisted image screening</p>
-            </div>
+    <!-- LEFT : MEDSOURCE AI -->
+
+    <div class="brand">
+
+        <div class="medical-icon">
+
+            <i class="fa-solid fa-heart-pulse"></i>
 
         </div>
 
-        <div class="ai-badge">
-            AI ANALYSIS
-        </div>
 
-    </header>
+        <div>
 
-
-    <!-- MAIN -->
-
-    <main class="container">
-
-        <div class="page-title">
-
-            <h2>Analysis Result</h2>
+            <h1>
+                MedSource AI
+            </h1>
 
             <p>
-                Review the AI-generated screening result below.
+                AI-assisted medical image screening
             </p>
 
         </div>
 
+    </div>
 
-        <div class="dashboard">
+
+    <!-- RIGHT : BACK -->
+
+    <div class="header-right">
+
+        <a
+            href="/home"
+            class="header-back"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            <span>
+                Back
+            </span>
+
+        </a>
+
+    </div>
+
+</header>
 
 
-            <!-- IMAGE -->
 
-            <section class="image-card">
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-                <div class="card-header">
+<main class="container">
 
-                    <h3>Uploaded Image</h3>
 
-                    <span>
-                        Image submitted for analysis
-                    </span>
+    <div class="page-title">
+
+        <h2>
+            Analysis Result
+        </h2>
+
+        <p>
+            Review the AI-generated screening result below.
+        </p>
+
+    </div>
+
+
+
+    <div class="dashboard">
+
+
+        <!-- =================================================
+             IMAGE
+        ================================================= -->
+
+        <section class="image-card">
+
+
+            <div class="card-header">
+
+                <h3>
+                    Uploaded Image
+                </h3>
+
+                <span>
+                    Image submitted for analysis
+                </span>
+
+            </div>
+
+
+            <div class="image-area">
+
+                <div class="image-box">
+
+                    {% if image_url %}
+
+                        <img
+                            src="{{ image_url }}"
+                            alt="Uploaded medical image"
+                        >
+
+                    {% else %}
+
+                        <div class="no-image">
+
+                            Image preview unavailable
+
+                        </div>
+
+                    {% endif %}
 
                 </div>
 
+            </div>
 
-                <div class="image-area">
+        </section>
 
-                    <div class="image-box">
 
-                        {% if image_url %}
 
-                            <img
-                                src="{{ image_url }}"
-                                alt="Uploaded medical image"
-                            >
+        <!-- =================================================
+             RESULT
+        ================================================= -->
 
-                        {% else %}
+        <section class="result-card">
 
-                            <div class="no-image">
-                                Image preview unavailable
+
+            <div class="card-header">
+
+                <h3>
+                    AI Screening Result
+                </h3>
+
+                <span>
+                    Automated model analysis
+                </span>
+
+            </div>
+
+
+            <div class="result-content">
+
+
+                <!-- =================================================
+                     NON MEDICAL
+                ================================================= -->
+
+                {% if not result.medical %}
+
+
+                    <div class="nonmedical">
+
+
+                        <div class="result-status">
+
+                            <div class="status-icon">
+
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+
                             </div>
 
-                        {% endif %}
+
+                            <div>
+
+                                <h2>
+                                    Non-Medical Image
+                                </h2>
+
+                                <p>
+                                    Analysis stopped
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="message-box">
+
+                            This image has been identified as
+                            non-medical or outside the scope of
+                            this medical imaging system.
+
+                            <br><br>
+
+                            The analysis has been stopped because
+                            the AI model is not trained to evaluate
+                            this type of image.
+
+                        </div>
 
                     </div>
 
-                </div>
-
-            </section>
 
 
-            <!-- RESULT -->
+                <!-- =================================================
+                     MEDICAL
+                ================================================= -->
 
-            <section class="result-card">
-
-                <div class="card-header">
-
-                    <h3>AI Screening Result</h3>
-
-                    <span>
-                        Automated model analysis
-                    </span>
-
-                </div>
+                {% else %}
 
 
-                <div class="result-content">
+                    <!-- =================================================
+                         NORMAL
+                    ================================================= -->
+
+                    {% if result.model2Prediction|lower == "normal" %}
 
 
-                    <!-- NON MEDICAL -->
+                        <div class="normal">
 
-                    {% if not result.medical %}
-
-                        <div class="nonmedical">
 
                             <div class="result-status">
 
                                 <div class="status-icon">
-                                    !
+
+                                    <i class="fa-solid fa-check"></i>
+
                                 </div>
+
 
                                 <div>
 
                                     <h2>
-                                        Non-Medical Image
+                                        Normal
                                     </h2>
 
                                     <p>
-                                        Analysis stopped
+                                        No abnormality detected
+                                        by the AI model
                                     </p>
 
                                 </div>
@@ -543,251 +1346,277 @@
                             </div>
 
 
+
                             <div class="message-box">
 
-                                This image has been identified as
-                                non-medical or outside the scope of
-                                this medical imaging system.
+                                The AI model did not detect an
+                                abnormality in the submitted image.
 
                                 <br><br>
 
-                                The analysis has been stopped because
-                                the AI model is not trained to evaluate
-                                this type of image.
+                                This result is based only on the
+                                model's analysis and should not be
+                                considered a confirmation of a
+                                patient's overall health.
 
                             </div>
+
+
+
+                            {% if result.model2Confidence is not none %}
+
+
+                                <div class="confidence-card">
+
+
+                                    <div class="confidence-top">
+
+                                        <span class="confidence-label">
+                                            Model confidence
+                                        </span>
+
+
+                                        <span class="confidence-value">
+
+                                            {{ "%.2f"|format(
+                                                result.model2Confidence
+                                            ) }}%
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="confidence-bar">
+
+                                        <div
+                                            class="confidence-fill"
+                                            style="width: {{ result.model2Confidence }}%;"
+                                        ></div>
+
+                                    </div>
+
+                                </div>
+
+
+                            {% endif %}
 
                         </div>
 
 
-                    <!-- MEDICAL -->
+
+                    <!-- =================================================
+                         ABNORMAL
+                    ================================================= -->
 
                     {% else %}
 
 
-                        <!-- NORMAL -->
+                        <div class="abnormal">
 
-                        {% if result.model2Prediction|lower == "normal" %}
 
-                            <div class="normal">
+                            <div class="result-status">
 
-                                <div class="result-status">
+                                <div class="status-icon">
 
-                                    <div class="status-icon">
-                                        ✓
-                                    </div>
-
-                                    <div>
-
-                                        <h2>
-                                            Normal
-                                        </h2>
-
-                                        <p>
-                                            No abnormality detected
-                                            by the AI model
-                                        </p>
-
-                                    </div>
+                                    <i class="fa-solid fa-exclamation"></i>
 
                                 </div>
 
 
-                                <div class="message-box">
+                                <div>
 
-                                    The AI model did not detect an
-                                    abnormality in the submitted image.
+                                    <h2>
+                                        Abnormal
+                                    </h2>
 
-                                    <br><br>
-
-                                    This result is based only on the
-                                    model's analysis and should not be
-                                    considered a confirmation of a
-                                    patient's overall health.
+                                    <p>
+                                        Possible abnormality detected
+                                    </p>
 
                                 </div>
-
-
-                                {% if result.model2Confidence is not none %}
-
-                                    <div class="confidence-card">
-
-                                        <div class="confidence-top">
-
-                                            <span class="confidence-label">
-                                                Model confidence
-                                            </span>
-
-                                            <span class="confidence-value">
-                                                {{ "%.2f"|format(result.model2Confidence) }}%
-                                            </span>
-
-                                        </div>
-
-
-                                        <div class="confidence-bar">
-
-                                            <div
-                                                class="confidence-fill"
-                                                style="width: {{ result.model2Confidence }}%;"
-                                            ></div>
-
-                                        </div>
-
-                                    </div>
-
-                                {% endif %}
 
                             </div>
 
 
-                        <!-- ABNORMAL -->
 
-                        {% else %}
+                            <div class="message-box">
 
-                            <div class="abnormal">
+                                The AI model detected findings that
+                                may indicate an abnormality in the
+                                submitted image.
 
-                                <div class="result-status">
+                                <br><br>
 
-                                    <div class="status-icon">
-                                        !
-                                    </div>
-
-                                    <div>
-
-                                        <h2>
-                                            Abnormal
-                                        </h2>
-
-                                        <p>
-                                            Possible abnormality detected
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="message-box">
-
-                                    The AI model detected findings that
-                                    may indicate an abnormality in the
-                                    submitted image.
-
-                                    <br><br>
-
-                                    Please consult a qualified doctor
-                                    or radiologist for professional
-                                    evaluation.
-
-                                </div>
-
-
-                                {% if result.model2Confidence is not none %}
-
-                                    <div class="confidence-card">
-
-                                        <div class="confidence-top">
-
-                                            <span class="confidence-label">
-                                                Model confidence
-                                            </span>
-
-                                            <span class="confidence-value">
-                                                {{ "%.2f"|format(result.model2Confidence) }}%
-                                            </span>
-
-                                        </div>
-
-
-                                        <div class="confidence-bar">
-
-                                            <div
-                                                class="confidence-fill"
-                                                style="width: {{ result.model2Confidence }}%;"
-                                            ></div>
-
-                                        </div>
-
-                                    </div>
-
-                                {% endif %}
+                                Please consult a qualified doctor
+                                or radiologist for professional
+                                evaluation.
 
                             </div>
 
-                        {% endif %}
+
+
+                            {% if result.model2Confidence is not none %}
+
+
+                                <div class="confidence-card">
+
+
+                                    <div class="confidence-top">
+
+                                        <span class="confidence-label">
+                                            Model confidence
+                                        </span>
+
+
+                                        <span class="confidence-value">
+
+                                            {{ "%.2f"|format(
+                                                result.model2Confidence
+                                            ) }}%
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="confidence-bar">
+
+                                        <div
+                                            class="confidence-fill"
+                                            style="width: {{ result.model2Confidence }}%;"
+                                        ></div>
+
+                                    </div>
+
+                                </div>
+
+
+                            {% endif %}
+
+                        </div>
+
 
                     {% endif %}
 
 
-                    <!-- INFORMATION -->
+                {% endif %}
 
-                    <div class="info">
 
-                        <div class="info-icon">
-                            i
-                        </div>
 
-                        <div>
-                            AI predictions are based on patterns learned
-                            from training data and may not always be
-                            accurate. Results should be reviewed by a
-                            qualified healthcare professional.
-                        </div>
+                <!-- =================================================
+                     INFORMATION
+                ================================================= -->
+
+                <div class="info">
+
+
+                    <div class="info-icon">
+
+                        <i class="fa-solid fa-info"></i>
 
                     </div>
 
 
-                    <!-- BUTTON -->
+                    <div>
 
-                    <div class="button-area">
-
-                        <a href="/image_diagnosis" class="back-button">
-                            ← Analyse Another Image
-                        </a>
+                        AI predictions are based on patterns learned
+                        from training data and may not always be
+                        accurate. Results should be reviewed by a
+                        qualified healthcare professional.
 
                     </div>
 
                 </div>
 
-            </section>
-
-        </div>
 
 
-        <div class="footer">
-            Medical AI Screening System · For research and
-            informational purposes
-        </div>
+                <!-- =================================================
+                     BUTTON
+                ================================================= -->
 
-    </main>
+                <div class="button-area">
+
+                    <a
+                        href="/image_diagnosis"
+                        class="back-button"
+                    >
+
+                        <i class="fa-solid fa-rotate-right"></i>
+
+                        &nbsp;
+
+                        Analyse Another Image
+
+                    </a>
+
+                </div>
 
 
-    <!-- SCROLLING WARNING -->
+            </div>
 
-    <div class="warning-bar">
-
-        <div class="warning-track">
-
-            <span>
-                ⚠ AI predictions can be wrong. Please consult a
-                qualified doctor before making healthcare decisions.
-            </span>
-
-            <span>
-                ⚠ This AI result is for screening and informational
-                purposes only and does not replace professional
-                medical advice.
-            </span>
-
-            <span>
-                ⚠ AI predictions can be wrong. Please consult a
-                qualified doctor before making healthcare decisions.
-            </span>
-
-        </div>
+        </section>
 
     </div>
 
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <div class="footer">
+
+        MedSource AI · Medical Image Screening System ·
+        For research and informational purposes
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     WARNING
+===================================================== -->
+
+<div class="warning-bar">
+
+    <div class="warning-track">
+
+
+        <span>
+
+            ⚠ AI predictions can be wrong.
+            Please consult a qualified doctor before making
+            healthcare decisions.
+
+        </span>
+
+
+        <span>
+
+            ⚠ This AI result is for screening and informational
+            purposes only and does not replace professional
+            medical advice.
+
+        </span>
+
+
+        <span>
+
+            ⚠ AI predictions can be wrong.
+            Please consult a qualified doctor before making
+            healthcare decisions.
+
+        </span>
+
+
+    </div>
+
+</div>
+
+
 </body>
+
 </html>

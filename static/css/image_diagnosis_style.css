@@ -1,0 +1,729 @@
+
+
+:root {
+    --primary: #0878f9;
+    --primary-dark: #0667d8;
+    --primary-light: #eaf3ff;
+
+    --ink: #172033;
+    --text: #5f6b7a;
+
+    --paper: #f5f9ff;
+    --white: #ffffff;
+
+    --line: #d9e5f2;
+
+    --success: #0878f9;
+}
+
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding-top: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    background:
+        linear-gradient(135deg, #f5f9ff 0%, #eef6ff 100%);
+
+    font-family:
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    color: var(--ink);
+}
+
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.card {
+    width: 420px;
+    max-width: 92vw;
+
+    padding: 42px 34px;
+
+    background: var(--white);
+
+    border: 1px solid var(--line);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 10px 35px rgba(8, 120, 249, 0.08);
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+h1 {
+    font-size: 21px;
+    font-weight: 650;
+
+    margin: 0 0 8px;
+
+    color: #172033;
+}
+
+.hint {
+    margin: 0 0 25px;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    color: var(--text);
+}
+
+
+
+.drop {
+    position: relative;
+
+    display: block;
+
+    border: 1.5px dashed #b8d3f2;
+
+    border-radius: 12px;
+
+    padding: 32px 16px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    background: #fbfdff;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.drop:hover,
+.drop.dragover {
+    border-color: var(--primary);
+
+    background: #f0f7ff;
+
+    transform: translateY(-1px);
+}
+
+
+
+.drop svg {
+    width: 29px;
+    height: 29px;
+
+    margin-bottom: 11px;
+
+    stroke: var(--primary);
+}
+
+
+
+.drop-label {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #172033;
+}
+
+.drop-sub {
+    font-size: 12px;
+
+    color: #7c8796;
+
+    margin-top: 5px;
+}
+
+
+input[type="file"] {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+
+    cursor: pointer;
+}
+
+
+
+.preview {
+    margin-top: 20px;
+
+    display: none;
+}
+
+.preview.show {
+    display: block;
+}
+
+.preview img {
+    width: 100%;
+
+    max-height: 220px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--line);
+
+    display: block;
+}
+
+.filename {
+    margin-top: 9px;
+
+    font-size: 12px;
+
+    color: #6f7b8b;
+
+    word-break: break-all;
+}
+
+
+.submit-btn {
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 12px 16px;
+
+    background: var(--primary);
+
+    color: #ffffff;
+
+    border: none;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 16px rgba(8, 120, 249, 0.20);
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+.submit-btn:hover {
+    background: var(--primary-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(8, 120, 249, 0.28);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    background: #b9c7d8;
+
+    box-shadow: none;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* ==================================================
+   MEDICAL AI LOADING SCREEN
+================================================== */
+
+#loadingOverlay {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(240, 247, 255, 0.96);
+
+    backdrop-filter: blur(6px);
+
+    z-index: 99999;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+}
+
+
+/* =========================
+   SCANNER CARD
+========================= */
+
+.scanner-card {
+    width: 430px;
+
+    max-width: 95%;
+
+    background: #ffffff;
+
+    border: 1px solid #dce9f7;
+
+    border-radius: 22px;
+
+    padding: 36px 30px;
+
+    text-align: center;
+
+    box-shadow:
+        0 18px 55px rgba(8, 75, 150, 0.14);
+
+    animation: cardAppear 0.4s ease;
+}
+
+
+/* =========================
+   MEDICAL ICON
+========================= */
+
+.medical-icon {
+    width: 76px;
+
+    height: 76px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: #e8f3ff;
+
+    color: var(--primary);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border: 1px solid #cfe3fa;
+}
+
+.medical-icon span {
+    font-size: 43px;
+
+    font-weight: 300;
+
+    color: var(--primary);
+
+    z-index: 2;
+}
+
+
+/* Scanner animation */
+
+.pulse-line {
+    position: absolute;
+
+    width: 120px;
+
+    height: 2px;
+
+    background: var(--primary);
+
+    left: -120px;
+
+    animation: pulseScan 1.5s infinite;
+}
+
+
+/* =========================
+   LOADING HEADING
+========================= */
+
+.scanner-card h2 {
+    margin: 0;
+
+    color: #123b66;
+
+    font-size: 23px;
+
+    font-weight: 650;
+}
+
+.main-loading-text {
+    margin-top: 8px;
+
+    color: #65758a;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+.progress-container {
+    width: 100%;
+
+    height: 6px;
+
+    background: #e5eef8;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    margin: 25px 0;
+}
+
+.progress-bar {
+    width: 30%;
+
+    height: 100%;
+
+    background: var(--primary);
+
+    border-radius: 10px;
+
+    animation: progressAnimation 4s infinite;
+}
+
+
+/* =========================
+   STEPS
+========================= */
+
+.steps {
+    text-align: left;
+
+    margin-top: 20px;
+}
+
+.step {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px 12px;
+
+    margin-bottom: 7px;
+
+    border-radius: 10px;
+
+    color: #9aa8b8;
+
+    font-size: 14px;
+
+    transition: all 0.4s ease;
+}
+
+
+/* Active step */
+
+.step.active {
+    background: #edf5ff;
+
+    color: #0869d9;
+
+    font-weight: 600;
+}
+
+
+/* Completed step */
+
+.step.completed {
+    color: var(--primary);
+
+    font-weight: 500;
+}
+
+
+/* Step circle */
+
+.step-icon {
+    width: 22px;
+
+    height: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e5edf6;
+
+    font-size: 12px;
+
+    flex-shrink: 0;
+}
+
+
+/* Active/completed circle */
+
+.step.active .step-icon,
+.step.completed .step-icon {
+    background: var(--primary);
+
+    color: white;
+}
+
+
+/* =========================
+   WARNING
+========================= */
+
+.warning-text {
+    margin-top: 20px;
+
+    font-size: 12px;
+
+    color: #8290a0;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes pulseScan {
+
+    0% {
+        left: -120px;
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        left: 120px;
+        opacity: 0;
+    }
+
+}
+
+
+@keyframes progressAnimation {
+
+    0% {
+        width: 10%;
+    }
+
+    50% {
+        width: 70%;
+    }
+
+    90% {
+        width: 90%;
+    }
+
+    100% {
+        width: 10%;
+    }
+
+}
+
+
+@keyframes cardAppear {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(15px)
+            scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+    .card {
+        padding: 32px 22px;
+    }
+
+    .scanner-card {
+        padding: 30px 22px;
+    }
+
+    .scanner-card h2 {
+        font-size: 21px;
+    }
+
+}
+
+/* =========================
+   MAIN HEADER
+========================= */
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    min-height: 82px;
+;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 7%;
+    background: rgba(255, 255, 255, 0.97);
+
+    border-bottom: 1px solid #dce8f5;
+
+    box-shadow:
+        0 4px 18px rgba(8, 120, 249, 0.06);
+
+    z-index: 1000;
+
+    backdrop-filter: blur(10px);
+}
+
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+}
+
+.logo strong {
+    color: var(--primary);
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: linear-gradient(135deg, #1598ff, #0862df);
+    font-size: 23px;
+    box-shadow: 0 6px 15px rgba(8, 120, 249, 0.2);
+}
+
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 9px 16px;
+
+    border: 1px solid #d5e4f4;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #0878f9;
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.back-btn i {
+    font-size: 13px;
+}
+
+.back-btn:hover {
+    
+
+    border-color: #0878f9;
+
+    background: #f0f7ff;
+
+    transform: translateX(2px);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .main-header {
+        height: 64px;
+
+        padding: 0 16px;
+    }
+
+
+    .back-btn {
+        padding: 8px 11px;
+    }
+
+    .back-btn span {
+        display: none;
+    }
+
+    body {
+        padding-top: 64px;
+    }
+}

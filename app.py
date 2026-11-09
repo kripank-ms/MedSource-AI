@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form, File,UploadFile
+from fastapi import FastAPI, Form, File,UploadFile,HTTPException
 from typing import Annotated
 from fastapi.responses import HTMLResponse
 from fastapi.responses import RedirectResponse
@@ -20,7 +20,7 @@ import pandas as pd
 import face_recognition
 from PIL import Image
 import base64
-
+import httpx
 
 
 app = FastAPI()
@@ -29,11 +29,12 @@ app.add_middleware(SessionMiddleware,secret_key="assesseionsecretkeys222")
 app.mount("/static",StaticFiles(directory="static"), name="static")
 
 # Models
-heart_model = load("models/ckd_model.joblib")
+heart_model = load("models/Heart_model.joblib")
 kidney_model = load("models/ckd_model.joblib")
 stroke_model = load("models/stroke_model.joblib")
 copd_model = load("models/Copd.joblib")
 tb_model = load("models/TB_model.joblib")
+hiv_model = load('models/HIV_model.joblib')
 
 medical_or_not_model = load_model('models/medical_or_not_model.keras')
 types_of_medical_model = load_model('models/types_of_medical_model.keras')
@@ -43,7 +44,7 @@ kidney_CT_Model = load_model('models/kidney_CT_model.keras')
 X_ray_categorys_model = load_model('models/X_ray_category_model.keras')
 chest_x_ray_model = load_model('models/chest_x_ray_model.keras')
 elbow_x_ray_model = load_model('models/elbow_x_ray_model.keras')
-foream_x_ray_model = load_model('models/foreaam_x_ray_model.keras')
+foream_x_ray_model = load_model('models/foream_x_ray_model.keras')
 hand_x_ray_model = load_model('models/hand_model.keras')
 humerus_x_raay_model = load_model('models/humerus_model.keras')
 brain_mri_model = load_model('models/Brain_tumor_model.keras')
@@ -53,6 +54,7 @@ brain_mri_model = load_model('models/Brain_tumor_model.keras')
 templates = Jinja2Templates(directory="templates")
 pass_context = CryptContext(schemes=["argon2"])
 
+RAG_API_URL = "http://127.0.0.1:8001"
 
 
 # Show HTML page
@@ -77,20 +79,51 @@ async def home(request:Request):
         }
     )
 
+
+
 @app.get("/login_page", response_class=HTMLResponse)
 async def read_login(request: Request):
 
     return templates.TemplateResponse(name="login.html",request=request)
 
-@app.get ("/face_login", response_class=HTMLResponse)
-async def read_login_with_face(request:Request):
-
-    return templates.TemplateResponse(name="face_login.html",request=request)
-
 @app.get("/register_page",response_class=HTMLResponse)
 async def read_register(request:Request):
 
     return templates.TemplateResponse(name="register.html",request=request)
+
+
+@app.get("/user_details", response_class=HTMLResponse)
+async def user_details(request: Request):
+
+    email = request.session.get("email")
+
+    if not email:
+        return RedirectResponse("/login_page", status_code=303)
+
+    user = user_collection.find_one(
+        {"email": email}
+    )
+
+    if not user:
+        request.session.clear()
+        return RedirectResponse("/login_page", status_code=303)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="user_details.html",
+        context={
+            "name": user["name"],
+            "email": user["email"]
+        }
+    )
+
+@app.get("/account_deleted")
+async def account_deleted(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="account_deleted.html"
+    )
 
 @app.get("/disease_prediction", response_class=HTMLResponse)
 async def disease_prediction(request:Request):
@@ -122,10 +155,21 @@ async def td_disease(request:Request):
 
     return templates.TemplateResponse(request=request,name="TB_disease.html",context={"prediction":None})
 
+@app.get("/hiv",response_class=HTMLResponse)
+async def hiv(request:Request):
+
+    return templates.TemplateResponse(request=request,name="hiv_prediction.html",context={"prediction":None})
+
 @app.get("/image_diagnosis",response_class=HTMLResponse)
 async def image_diagnosis(request:Request):
 
     return templates.TemplateResponse(request=request,name="image_diagnosis.html")
+
+
+@app.get("/medical_chatbot", response_class=HTMLResponse)
+async def medical_chatbot(request: Request):
+    return templates.TemplateResponse(request=request, name="medical_chatbot.html")
+
 # MongoDB Connection
 
 client = MongoClient("mongodb://localhost:27017")
@@ -136,39 +180,29 @@ user_collection = db["usersDataCollection"]
 
 @app.post("/register")
 async def register_data(
+    request: Request,
     username: str = Form(...),
     email: str = Form(...),
-    password: str =Form(...),
-    file: UploadFile = File(...),
+    password: str =Form(...)
 ):
     
-    image = face_recognition.load_image_file(file.file)
-    face_detect = face_recognition.face_locations(image)
-    if len(face_detect) <= 0:
-        return "face not find"
-    elif len(face_detect) > 1:
-        return "there are many faces"
-    else :
-        encoded_face_data = face_recognition.face_encodings(image,face_detect)
-        
-        encoded_face_data = encoded_face_data[0].tolist()
-        check_email =  user_collection.find_one({"email":email})
 
-        if check_email:
-            return "emial is already existed"
-        
-        hash_pass = pass_context.hash(password)
-        
-        user_data = {
-            "name":username,
-            "email":email,
-            "password":hash_pass,
-            "face_encoding":encoded_face_data
-        }
+    check_email =  user_collection.find_one({"email":email})
 
-        user_collection.insert_one(user_data)
+    if check_email:
+        return "emial is already existed"
+    
+    hash_pass = pass_context.hash(password)
+    
+    user_data = {
+        "name":username.title(),
+        "email":email,
+        "password":hash_pass,
+    }
 
-        return "done"
+    user_collection.insert_one(user_data)
+    request.session["email"] = user_data['email']
+    return RedirectResponse("/home", status_code=303)
     
 @app.post("/login")
 async def login(request:Request, email: str = Form(...),password: str = Form(...)):
@@ -183,57 +217,74 @@ async def login(request:Request, email: str = Form(...),password: str = Form(...
     else:
         return "invalid email"
         
+@app.post("/update_password")
+async def update_password(request: Request):
+
+    email = request.session.get("email")
+
+    if not email:
+        raise HTTPException(status_code=401, detail="Please login first")
+
+    data = await request.json()
+
+    old_password = data.get("old_password")
+    new_password = data.get("new_password")
+
+    if not old_password or not new_password:
+        raise HTTPException(status_code=400, detail="All fields are required")
+
+    if len(new_password) < 8:
+        raise HTTPException(status_code=400, detail="Password must contain at least 8 characters")
+
+    user = user_collection.find_one({"email": email})
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if not pass_context.verify(old_password, user["password"]):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+
+    new_hash = pass_context.hash(new_password)
+
+    user_collection.update_one(
+        {"email": email},
+        {"$set": {"password": new_hash}}
+    )
+
+    return {"message": "Password updated successfully"}
 
 
-    
-@app.post("/face_login")
 
-async def face_data_login(
-    file : UploadFile = File(...)
-):
-    image = face_recognition.load_image_file(file.file)
+@app.post("/delete_account")
+async def delete_account(request: Request):
 
-    encode = face_recognition.face_encodings(image)
-    if len(encode) ==0:
-        return {
-            "match" : False,
-            "message": "no face detected"
-        }
-    
-    unknown_encode = encode[0]
-    users =  user_collection.find()
+    email = request.session.get("email")
 
-    best_match = None
-    min_distance = 999
+    if not email:
+        raise HTTPException(status_code=401, detail="Please login first")
 
-    for user in users:
+    data = await request.json()
 
-        db_encoding = np.array(
-            user["face_encoding"],
-            dtype=np.float64
-        )
+    password = data.get("password")
 
-        distance = face_recognition.face_distance(
-            [db_encoding],
-            unknown_encode
-        )[0]
+    if not password:
+        raise HTTPException(status_code=400, detail="Password is required")
 
-        if distance < min_distance:
-            min_distance = distance
-            best_match = user
+    user = user_collection.find_one({"email": email})
 
-    if best_match and min_distance < 0.7:
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
 
-        return {
-            "match": True,
-            "user_id": str(best_match["_id"]),
-            "name": best_match["name"]
-        }
+    if not pass_context.verify(password, user["password"]):
+        raise HTTPException(status_code=400, detail="Incorrect password")
 
-    return {
-        "match": False,
-        "message": "Face not recognized"
-    }
+    user_collection.delete_one({"_id": user["_id"]})
+
+    request.session.clear()
+
+    return {"message": "Account deleted successfully"}
+
+
 
 def convertion_yes_no(data):
     if data.lower() == "yes":
@@ -288,7 +339,6 @@ async def predict_heart_disease(
     Sedentary_Lifestyle = convertion_yes_no(Sedentary_Lifestyle)
     Family_History = convertion_yes_no(Family_History)
     Chronic_Stress = convertion_yes_no(Chronic_Stress)
-
     columns = ['Chest_Pain', 'Shortness_of_Breath', 'Fatigue', 'Palpitations', 'Dizziness', 'Swelling', 'Pain_Arms_Jaw_Back', 'Cold_Sweats_Nausea', 'High_BP', 'High_Cholesterol', 'Diabetes', 'Smoking', 'Obesity', 'Sedentary_Lifestyle', 'Family_History', 'Chronic_Stress', 'Gender', 'Age']
 
     user_data = pd.DataFrame([[Chest_Pain,Shortness_of_Breath,Fatigue,Palpitations,Dizziness,Swelling,Pain_Arms_Jaw_Back,Cold_Sweats_Nausea,High_BP,High_Cholesterol,Diabetes,Smoking,Obesity,Sedentary_Lifestyle,Family_History,Chronic_Stress,Gender,Age]], columns=columns)
@@ -395,6 +445,7 @@ async def predict_copd(request:Request,
     columns = ['Age', 'Gender', 'BMI', 'Smoking_Status', 'Pack_Years','Secondhand_Smoke_Exposure', 'Occupational_Dust_Exposure','Air_Pollution_Exposure', 'Family_History_COPD', 'Asthma','Hypertension', 'Diabetes', 'Chronic_Cough', 'Sputum_Production','Wheezing', 'Shortness_of_Breath', 'Oxygen_Saturation','Physical_Activity', 'FEV1_Percent_Predicted']
     user_data = pd.DataFrame([[Age,Gender,BMI,Smoking_Status,Pack_Years,Secondhand_Smoke_Exposure,Occupational_Dust_Exposure,Air_Pollution_Exposure,Family_History_COPD,Asthma,Hypertension,Diabetes,Chronic_Cough,Sputum_Production,Wheezing,Shortness_of_Breath,Oxygen_Saturation,Physical_Activity,FEV1_Percent_Predicted]],columns=columns)
     prediction = copd_model.predict(user_data)
+    print(prediction)
     return templates.TemplateResponse(request=request, name="copd.html", context={"prediction":prediction})
 
 @app.post('/predict_tb')
@@ -438,13 +489,42 @@ async def predict_TB(request:Request,
 
     return templates.TemplateResponse(request=request,name="TB_disease.html",context={"prediction":prediction})
 
+@app.post("/hiv_prediction")
+async def hiv_prediction(request : Request,
+                        Age : int = Form(...),
+                        Sex : int = Form(...),
+                        Fever : int = Form(...),
+                        Fatigue : int = Form(...),
+                        Skin_Rash : int = Form(...),
+                        Night_Sweats : int = Form(...),
+                        Muscle_Aches : int = Form(...),
+                        Sore_Throat : int = Form(...),
+                        Swollen_Lymph_Nodes : int = Form(...),
+                        Headache : int = Form(...),
+                        Diarrhea : int = Form(...),
+                        Mouth_Ulcers : int = Form(...),
+                        Unexplained_Weight_Loss : int = Form(...),
+                        Persistent_Cough : int = Form(...),
+                        Recurrent_Infections : int = Form(...),
+                        Hemoglobin_g_dL : float = Form(...),
+                        WBC_Count_10e9_L : float = Form(...),
+                        CD4_Count_cells_uL : int = Form(...),
+                        Viral_Load_copies_mL : int = Form(...)):
+
+    columns = ['Age', 'Sex', 'Fever', 'Fatigue', 'Skin_Rash', 'Night_Sweats',
+       'Muscle_Aches', 'Sore_Throat', 'Swollen_Lymph_Nodes', 'Headache',
+       'Diarrhea', 'Mouth_Ulcers', 'Unexplained_Weight_Loss',
+       'Persistent_Cough', 'Recurrent_Infections', 'Hemoglobin_g_dL',
+       'WBC_Count_10e9_L', 'CD4_Count_cells_uL', 'Viral_Load_copies_mL']
+    user_data = pd.DataFrame([[Age, Sex, Fever, Fatigue, Skin_Rash, Night_Sweats,Muscle_Aches, Sore_Throat, Swollen_Lymph_Nodes, Headache,Diarrhea, Mouth_Ulcers, Unexplained_Weight_Loss,Persistent_Cough, Recurrent_Infections, Hemoglobin_g_dL,WBC_Count_10e9_L, CD4_Count_cells_uL, Viral_Load_copies_mL]],columns=columns)
+    prediction = hiv_model.predict(user_data)
+    return templates.TemplateResponse(request=request, name="hiv_prediction.html", context={"prediction":prediction})
+    
 @app.post("/image_diagnosis")
 async def image_ditection(
     request : Request,
     imageInput: UploadFile = File(...)
 ):  
-                        # models
-
     image_bytes = await imageInput.read()
 
     image_url = (
@@ -648,7 +728,47 @@ async def image_ditection(
         print('Non medical')
 
         return templates.TemplateResponse(request=request, name = 'result.html', context={"result": {"medical": False},"image_url": image_url} )
-    
+
+
+@app.post("/ask_medical_question")
+async def ask_medical_question(request: Request):
+    try:
+        data = await request.json()
+        question = data.get("question", "").strip()
+
+        if not question:
+            return {"answer": "Please enter a medical question."}
+        timeout = httpx.Timeout(
+            connect=60.0,
+            read=360.0,
+            write=600.0,
+            pool=30.0
+        )
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            response = await client.post(
+                f"{RAG_API_URL}/ask",
+                json={"question": question}
+            )
+            
+
+        response.raise_for_status()
+        return response.json()
+
+    except httpx.TimeoutException:
+        return {
+            "answer": "The medical assistant took too long to respond. Please try again."
+        }
+
+    except httpx.RequestError:
+        return {
+            "answer": "The medical assistant is currently unavailable. Please ensure the RAG service is running."
+        }
+
+    except httpx.HTTPStatusError:
+        return {
+            "answer": "The medical assistant encountered an error. Please try again."
+        }
+
 
 
 

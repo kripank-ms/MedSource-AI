@@ -4,291 +4,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CKD Prediction System</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+    <title>COPD Prediction System</title>
 
-        body {
-            background: #f5f7fa;
-            justify-content: center;
-            padding: 30px;
-        }
-      
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #0d6efd;
-            margin-bottom: 25px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 15px;
-        }
-
-        button {
-            width: 100%;
-            margin-top: 25px;
-            padding: 12px;
-            background: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #0b5ed7;
-        }
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 18px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-        }
-        .back-btn:hover {
-            background-color: #0056b3;
-        }
-        .message_box{
-            text-align: center;
-        }
-    </style>
-
+    <link rel="stylesheet"  href="static/css/medical_prediction.css">
 </head>
 
 <body>
 
-    <div class="container">
-        <a href="/disease_prediction" class="back-btn">← Back</a>
+<div class="page-container">
 
-        <h1>COPD Prediction System</h1>
+    <a href="/disease_prediction" class="back-btn">
+        ← Back
+    </a>
+
+    {% if prediction is not none %}
+            {% if prediction == 1 %}
+
+        <div class="result-section high-risk">
+
+            <div class="result-icon">
+                    ⚠
+            </div>
+
+
+            <div>
+                    <h2>
+                        COPD Risk Detected
+                    </h2>
+
+                    <div class="prediction-result">
+                        Higher Risk of Chronic obstructive pulmonary disease
+                    </div>
+
+                    <div class="confidence">
+                        The prediction model suggests an increased
+                        likelihood of COPD based on the provided information.
+                        Further medical evaluation is recommended.
+                    </div>
+                </div>
+
+            </div>
+
+
+                {% else %}
+
+                <div class="result-section low-risk">
+
+                <div class="result-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <h2>
+                        Lower COPD Risk
+                    </h2>
+
+                    <div class="prediction-result">
+                        Lower Risk of Chronic obstructive pulmonary disease
+                    </div>
+
+                    <div class="confidence">
+                        The model suggests a lower likelihood of COPD.
+                        This result does not guarantee the absence
+                        of lung disease.
+                    </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    {% endif %}
+
+
+    <div class="prediction-card">
+
+
+        <div class="page-header">
+
+            <div class="medical-icon">
+                🫁
+            </div>
+
+            <div>
+                <h1>COPD Prediction System</h1>
+
+                <p>
+                    Enter patient health information, respiratory symptoms,
+                    and exposure details to assess COPD risk.
+                </p>
+            </div>
+
+        </div>
+
 
         <form action="/predict_copd" method="post">
 
-            <div class="grid">
 
-    <div>
-        <label>Age</label>
-        <input type="number" name="Age" min="10" max="120" required>
+
+            <div class="section">
+
+                <div class="section-title">
+                    <span>1</span>
+                    <h2>Basic Patient Information</h2>
+                </div>
+
+                <p class="section-description">
+                    Provide the patient's demographic and physical information.
+                </p>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Age (Years)</label>
+
+                        <input
+                            type="number"
+                            name="Age"
+                            min="10"
+                            max="120"
+                            placeholder="Enter age"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Gender</label>
+
+                        <select name="Gender" required>
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Body Mass Index (BMI)</label>
+
+                        <input
+                            type="number"
+                            step="0.1"
+                            name="BMI"
+                            min="10"
+                            max="155"
+                            placeholder="Enter BMI"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Physical Activity</label>
+
+                        <select name="Physical_Activity" required>
+                            <option value="0">Low</option>
+                            <option value="1">Moderate</option>
+                            <option value="2">High</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-title">
+                    <span>2</span>
+                    <h2>Smoking & Environmental Exposure</h2>
+                </div>
+
+                <p class="section-description">
+                    Provide information about smoking habits and
+                    environmental exposure.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+                        <label>Smoking Status</label>
+
+                        <select name="Smoking_Status" required>
+                            <option value="0">Never</option>
+                            <option value="1">Former</option>
+                            <option value="2">Current</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Pack Years</label>
+
+                        <input type="number" name="Pack_Years" min="0" max="100" placeholder="Enter pack years" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Secondhand Smoke Exposure</label>
+
+                        <select name="Secondhand_Smoke_Exposure" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Occupational Dust Exposure</label>
+
+                        <select name="Occupational_Dust_Exposure" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Air Pollution Exposure</label>
+
+                        <select name="Air_Pollution_Exposure" required>
+                            <option value="0">Low</option>
+                            <option value="1">Moderate</option>
+                            <option value="2">High</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <div class="section">
+
+                <div class="section-title">
+                    <span>3</span>
+                    <h2>Medical History</h2>
+                </div>
+
+                <p class="section-description">
+                    Select the patient's existing medical conditions
+                    and family history.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+                        <label>Family History of COPD</label>
+
+                        <select name="Family_History_COPD" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Asthma</label>
+
+                        <select name="Asthma" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Hypertension</label>
+
+                        <select name="Hypertension" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Diabetes</label>
+
+                        <select name="Diabetes" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-title">
+                    <span>4</span>
+                    <h2>Respiratory Symptoms</h2>
+                </div>
+
+                <p class="section-description">
+                    Provide information about respiratory symptoms
+                    experienced by the patient.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+                        <label>Chronic Cough</label>
+
+                        <select name="Chronic_Cough" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Sputum Production</label>
+
+                        <select name="Sputum_Production" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Wheezing</label>
+
+                        <select name="Wheezing" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Shortness of Breath</label>
+
+                        <select name="Shortness_of_Breath" required>
+                            <option value="0">Mild</option>
+                            <option value="1">Moderate</option>
+                            <option value="2">Severe</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <div class="section">
+
+                <div class="section-title">
+                    <span>5</span>
+                    <h2>Clinical Measurements</h2>
+                </div>
+
+                <p class="section-description">
+                    Enter the patient's oxygen saturation and
+                    lung function measurement.
+                </p>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+                        <label>Oxygen Saturation (SpO₂ %)</label>
+
+                        <input type="number" name="Oxygen_Saturation" min="60" max="100" placeholder="Enter SpO₂" required >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>FEV1 (% Predicted)</label>
+
+                        <input
+                            type="number" step="0.1" name="FEV1_Percent_Predicted" min="0" max="150" placeholder="Enter FEV1 percentage" required>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <div class="button-container">
+
+                <button type="submit" class="predict-btn">
+
+                    <span class="btn-icon">🔍</span>
+
+                    Predict COPD Risk
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+
+
+        {% if prediction is not none %}
+
+        <div class="medical-disclaimer">
+
+            <strong>
+                ⚕ Medical Disclaimer
+            </strong>
+
+            <p>
+                This prediction is generated by a machine learning
+                model and is intended for informational and screening
+                purposes only. It is not a medical diagnosis.
+                Please consult a qualified healthcare professional
+                for proper evaluation and pulmonary function testing.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
     </div>
-
-    <div>
-        <label>Gender</label>
-        <select name="Gender">
-            <option value="1">Male</option>
-            <option value="0">Female</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Body Mass Index (BMI)</label>
-        <input type="number" step="0.1" name="BMI" min="10" max="155" required>
-    </div>
-
-    <div>
-        <label>Smoking Status</label>
-        <select name="Smoking_Status">
-            <option value="0">Never</option>
-            <option value="1">Former</option>
-            <option value="2">Current</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Pack Years</label>
-        <input type="number" name="Pack_Years" min="0" max="100" required>
-    </div>
-
-    <div>
-        <label>Secondhand Smoke Exposure</label>
-        <select name="Secondhand_Smoke_Exposure">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Occupational Dust Exposure</label>
-        <select name="Occupational_Dust_Exposure">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Air Pollution Exposure</label>
-        <select name="Air_Pollution_Exposure">
-            <option value="0">Low</option>
-            <option value="1">Moderate</option>
-            <option value="2">High</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Family History of COPD</label>
-        <select name="Family_History_COPD">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Asthma</label>
-        <select name="Asthma">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Hypertension</label>
-        <select name="Hypertension">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Diabetes</label>
-        <select name="Diabetes">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Chronic Cough</label>
-        <select name="Chronic_Cough">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Sputum Production</label>
-        <select name="Sputum_Production">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Wheezing</label>
-        <select name="Wheezing">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Shortness of Breath</label>
-        <select name="Shortness_of_Breath">
-            <option value="0">Mild</option>
-            <option value="1">Moderate</option>
-            <option value="2">Severe</option>
-        </select>
-    </div>
-
-    <div>
-        <label>Oxygen Saturation (SpO₂ %)</label>
-        <input type="number" name="Oxygen_Saturation" min="60" max="100" required>
-    </div>
-
-    <div>
-        <label>Physical Activity</label>
-        <select name="Physical_Activity">
-            <option value="0">Low</option>
-            <option value="1">Moderate</option>
-            <option value="2">High</option>
-        </select>
-    </div>
-
-    <div>
-        <label>FEV1 (% Predicted)</label>
-        <input type="number" step="0.1" name="FEV1_Percent_Predicted" min="0" max="150" required>
-    </div>
-
-</div>
-
-<button type="submit">Predict COPD</button>
-
-</form>
-
-    </div>
-    <div class="message_box">
-
-    {% if prediction is not none %}
-
-    {% if prediction == 1 %}
-
-    <h2 style="color:#d32f2f;">
-        ⚠️ COPD Risk: Positive
-    </h2>
-
-    <p>
-        The prediction model suggests that you may be at an increased risk of Chronic Obstructive Pulmonary Disease (COPD).
-        This prediction is intended for screening purposes only and is not a medical diagnosis.
-        Please consult a healthcare professional for further evaluation and pulmonary function testing.
-    </p>
-
-    {% endif %}
-
-    {% if prediction == 0 %}
-
-    <h2 style="color:#2e7d32;">
-        ✅ COPD Risk: Negative
-    </h2>
-
-    <p>
-        The prediction model suggests a lower likelihood of Chronic Obstructive Pulmonary Disease (COPD).
-        This result does not guarantee the absence of lung disease.
-        Maintain a healthy lifestyle, avoid smoking and air pollution, stay physically active, and attend regular medical checkups if you have respiratory symptoms.
-    </p>
-
-    {% endif %}
-
-    {% endif %}
 
 </div>
 
 </body>
-
 </html>

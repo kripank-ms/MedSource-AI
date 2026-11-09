@@ -1,139 +1,474 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sign Up Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
+    <title>Sign Up | MedSource AI</title>
 
-    body {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
 
-    .signup-box {
-        width: 380px;
-        padding: 40px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        text-align: center;
-    }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background: #f4f5ed;
+            color: #203a32;
+        }
 
-    .signup-box h2 {
-        margin-bottom: 20px;
-        color: #333;
-    }
+        /* Main Container */
 
-    .input-box {
-        margin-bottom: 12px;
-        text-align: left;
-    }
+        .signup-container {
+            width: 100%;
+            max-width: 1000px;
+            min-height: 590px;
+            display: flex;
+            overflow: hidden;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 15px 50px rgba(31, 69, 53, 0.12);
+        }
 
-    .input-box label {
-        font-size: 14px;
-        color: #555;
-    }
+        /* Left Medical Section */
 
-    .input-box input {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        outline: none;
-        transition: 0.3s;
-    }
+        .medical-section {
+            width: 50%;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #e4eee4;
+        }
 
-    .input-box input:focus {
-        border-color: #43e97b;
-        box-shadow: 0 0 5px rgba(67,233,123,0.5);
-    }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-    .btn {
-        width: 100%;
-        padding: 10px;
-        background:#4facfe;
-        border: none;
-        color: white;
-        font-size: 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: 0.3s;
-        margin-top: 10px;
-    }
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #285c46;
+            color: white;
+            border-radius: 14px;
+            font-size: 29px;
+            font-weight: bold;
+        }
 
-    .btn:hover {
-        background: #0077ff;
-    }
+        .brand h2 {
+            font-size: 23px;
+            color: #234b39;
+            letter-spacing: -0.5px;
+        }
 
-    .extra {
-        margin-top: 15px;
-        font-size: 14px;
-    }
+        .brand h2 span {
+            color: #6d987d;
+        }
 
-    .extra a {
-        color: #4facfe;
-        text-decoration: none;
-    }
+        .medical-content {
+            margin: 40px 0;
+        }
 
-    .extra a:hover {
-        text-decoration: underline;
-    }
-</style>
+        .tag {
+            display: inline-block;
+            padding: 8px 14px;
+            background: #d1e5d5;
+            color: #285c46;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+        }
+
+        .medical-content h1 {
+            font-size: 36px;
+            line-height: 1.3;
+            color: #203f31;
+            margin-bottom: 18px;
+        }
+
+        .medical-content h1 span {
+            color: #568367;
+        }
+
+        .medical-content p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #607568;
+            max-width: 370px;
+        }
+
+        /* Medical Illustration */
+
+        .medical-illustration {
+            width: 110px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 35px;
+            background: #c8dfce;
+            border: 1px solid #b4d0bb;
+            border-radius: 50%;
+            color: #285c46;
+            font-size: 65px;
+            box-shadow: 0 0 0 18px rgba(200, 223, 206, 0.35);
+        }
+
+        .medical-footer {
+            font-size: 12px;
+            color: #6b8173;
+            line-height: 1.6;
+        }
+
+        /* Right Signup Section */
+
+        .signup-section {
+            width: 50%;
+            padding: 45px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .signup-heading {
+            margin-bottom: 28px;
+        }
+
+        .signup-heading h2 {
+            font-size: 30px;
+            color: #233f32;
+            margin-bottom: 10px;
+        }
+
+        .signup-heading p {
+            color: #849188;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* Input Fields */
+
+        .input-box {
+            margin-bottom: 19px;
+            text-align: left;
+        }
+
+        .input-box label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #40584a;
+            margin-bottom: 9px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #dce4dc;
+            background: #fafbf8;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #263f32;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-box input::placeholder {
+            color: #a0aaa2;
+        }
+
+        .input-box input:focus {
+            border-color: #568367;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(86, 131, 103, 0.10);
+        }
+
+        /* Signup Button */
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 10px;
+            background: #285c46;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #1d4835;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 18px rgba(40, 92, 70, 0.18);
+        }
+
+        /* Login Link */
+
+        .extra {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 13px;
+            color: #7b8980;
+        }
+
+        .extra a {
+            color: #397354;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .extra a:hover {
+            text-decoration: underline;
+        }
+
+        /* Security Information */
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 28px;
+            color: #87958b;
+            font-size: 11px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .security-icon {
+            color: #568367;
+            font-size: 17px;
+        }
+
+        /* Responsive Design */
+
+        @media (max-width: 768px) {
+
+            body {
+                padding: 18px;
+                align-items: flex-start;
+            }
+
+            .signup-container {
+                max-width: 450px;
+                flex-direction: column;
+            }
+
+            .medical-section {
+                width: 100%;
+                padding: 30px;
+            }
+
+            .medical-content {
+                margin: 30px 0 20px;
+            }
+
+            .medical-content h1 {
+                font-size: 29px;
+            }
+
+            .medical-content p {
+                font-size: 14px;
+            }
+
+            .medical-illustration {
+                width: 75px;
+                height: 75px;
+                font-size: 42px;
+                margin-top: 25px;
+            }
+
+            .medical-footer {
+                margin-top: 20px;
+            }
+
+            .signup-section {
+                width: 100%;
+                padding: 35px 30px;
+            }
+
+            .signup-heading h2 {
+                font-size: 27px;
+            }
+        }
+
+        @media (max-width: 380px) {
+
+            .medical-section,
+            .signup-section {
+                padding: 25px 20px;
+            }
+
+            .medical-content h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="signup-box">
-    <h2>Create Account</h2>
+    <div class="signup-container">
 
-    <form action="/register" method="POST" enctype="multipart/form-data">
-        <div class="input-box">
-            <label>Username</label>
-            <input type="text" name="username" placeholder="Enter username" required>
-        </div>
+        <!-- Left Medical Information Section -->
 
-        <div class="input-box">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Enter email" required>
-        </div>
+        <section class="medical-section">
 
-        <div class="input-box">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter password" required>
-        </div>
+            <div class="brand">
 
-        <div class="input-box">
-            <label for="">If you want a face Lock please upload your photo</label>
-            <input type="file" name="file" accept="image/*" capture="camera">
-        </div>
+                <div class="brand-icon">+</div>
 
-        <button class="btn" type="submit">Sign Up</button>
+                <h2>MedSource <span>AI</span></h2>
+
+            </div>
+
+            <div class="medical-content">
+
+                <span class="tag">INTELLIGENT HEALTHCARE</span>
+
+                <h1>
+                    Your Health Journey
+                    <br>
+                    Starts <span>Here.</span>
+                </h1>
+
+                <p>
+                    Create your MedSource AI account to explore
+                    AI-powered medical image analysis, disease prediction,
+                    and intelligent medical information.
+                </p>
+
+                <div class="medical-illustration">
+                    +
+                </div>
+
+            </div>
+
+            <div class="medical-footer">
+                © 2026 MedSource AI. All rights reserved.
+            </div>
+
+        </section>
 
 
+        <!-- Right Signup Form -->
 
-    
+        <section class="signup-section">
 
-    </form>
+            <div class="signup-heading">
 
-    <div class="extra">
-        <p>Already have an account? <a href="/login_page">Login</a></p>
+                <h2>Create Account</h2>
+
+                <p>
+                    Join MedSource AI and get started in just a few steps.
+                </p>
+
+            </div>
+
+            <form action="/register"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <div class="input-box">
+
+                    <label for="username">Username</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-box">
+
+                    <label for="email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-box">
+
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a strong password"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required
+                    >
+
+                </div>
+
+
+                <button class="btn" type="submit">
+                    Create My Account
+                </button>
+
+            </form>
+
+
+            <div class="extra">
+
+                <p>
+                    Already have an account?
+                    <a href="/login_page">Sign In</a>
+                </p>
+
+            </div>
+
+
+            <div class="security-note">
+
+                <span class="security-icon">✚</span>
+
+                <span>
+                    Your information should be handled securely.
+                    <br>
+                    Use this platform for informational purposes only.
+                </span>
+
+            </div>
+
+        </section>
+
     </div>
-</div>
 
 </body>
-
-
 
 </html>

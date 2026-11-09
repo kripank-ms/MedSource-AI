@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HIV Risk Prediction | MedSource AI</title>
+
+    <link rel="stylesheet" href="static/css/medical_prediction.css">
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <a href="/disease_prediction" class="back-btn"> ← Back </a>
+
+    {% if prediction is not none %}
+
+        {% if prediction == 1 %}
+
+        <div class="result-section high-risk">
+
+            <div class="result-icon">
+                ⚠
+            </div>
+
+            <div>
+
+                <h2>
+                    HIV Risk Detected
+                </h2>
+
+                <div class="prediction-result">
+                    Higher Risk of HIV
+                </div>
+
+                <div class="confidence">
+                    Based on the information provided,
+                    the model indicates a higher likelihood
+                    of HIV infection.
+                </div>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <div class="result-section low-risk">
+
+            <div class="result-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <h2>
+                    Lower HIV Risk
+                </h2>
+
+                <div class="prediction-result">
+                    Lower Risk of HIV
+                </div>
+
+                <div class="confidence">
+                    Based on the information provided,
+                    the model indicates a lower likelihood
+                    of HIV infection.
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    {% endif %}
+
+    <div class="prediction-card">
+
+        <div class="page-header">
+
+            <div class="medical-icon"> 🧬 </div>
+
+            <div>
+                <h1>HIV Status Prediction</h1>
+
+                <p>
+                    Enter the patient's information and clinical parameters
+                    for prediction.
+                </p>
+            </div>
+
+        </div>
+
+
+        <form id="hivForm" action="/hiv_prediction" method="POST">
+
+
+            <div class="section">
+
+                <div class="section-title">
+                    <span>01</span>
+                    <h2>Patient Information</h2>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+
+                        <label for="Age"> Age </label>
+                        <input   type="number" id="Age" name="Age"  min="18"  max="100" placeholder="Enter age" required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="Sex"> Sex </label>
+
+                        <select id="Sex" name="Sex" required>
+
+                            <option value="">  Select sex </option>
+
+                            <option value="1">
+                                Male
+                            </option>
+
+                            <option value="0">  Female  </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="section">
+
+                <div class="section-title">
+
+                    <span>02</span>
+
+                    <h2>Symptoms</h2>
+
+                </div>
+
+                <p class="section-description">
+                    Select whether the patient currently has each symptom.
+                </p>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="Fever"> Fever </label>
+
+                        <select id="Fever" name="Fever" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Fatigue"> Fatigue </label>
+
+                        <select id="Fatigue" name="Fatigue" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Skin_Rash"> Skin Rash </label>
+
+                        <select id="Skin_Rash" name="Skin_Rash" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Night_Sweats">  Night Sweats  </label>
+
+                        <select id="Night_Sweats" name="Night_Sweats" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Muscle_Aches">  Muscle Aches  </label>
+
+                        <select id="Muscle_Aches" name="Muscle_Aches" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Sore_Throat">  Sore Throat </label>
+
+                        <select id="Sore_Throat" name="Sore_Throat" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Swollen_Lymph_Nodes">
+                            Swollen Lymph Nodes
+                        </label>
+
+                        <select id="Swollen_Lymph_Nodes" name="Swollen_Lymph_Nodes"  required>
+
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Headache">
+                            Headache
+                        </label>
+
+                        <select id="Headache" name="Headache" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Diarrhea">
+                            Diarrhea
+                        </label>
+
+                        <select id="Diarrhea" name="Diarrhea" required>
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Mouth_Ulcers">  Mouth Ulcers </label>
+
+                        <select id="Mouth_Ulcers" name="Mouth_Ulcers"  required>
+
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Unexplained_Weight_Loss">
+                            Unexplained Weight Loss
+                        </label>
+
+                        <select id="Unexplained_Weight_Loss" name="Unexplained_Weight_Loss" required>
+
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Persistent_Cough"> Persistent Cough </label>
+
+                        <select id="Persistent_Cough"  name="Persistent_Cough" required>
+
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Recurrent_Infections">
+                            Recurrent Infections
+                        </label>
+
+                        <select id="Recurrent_Infections"  name="Recurrent_Infections" required>
+
+                            <option value="">Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-title">
+
+                    <span>03</span>
+
+                    <h2>Laboratory Parameters</h2>
+
+                </div>
+
+                <p class="section-description">
+                    Enter the patient's laboratory measurements.
+                </p>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="Hemoglobin_g_dL">
+                            Hemoglobin (g/dL)
+                        </label>
+
+                        <input
+                            type="number" step="0.1" id="Hemoglobin_g_dL"  name="Hemoglobin_g_dL"  placeholder="Example: 13.5" required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="WBC_Count_10e9_L">
+                            WBC Count (10⁹/L)
+                        </label>
+
+                        <input
+                            type="number"  step="0.01" id="WBC_Count_10e9_L"  name="WBC_Count_10e9_L"  placeholder="Example: 6.5" required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="CD4_Count_cells_uL">
+                            CD4 Count (cells/µL)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="CD4_Count_cells_uL"
+                            name="CD4_Count_cells_uL"
+                            min="0"
+                            placeholder="Example: 500"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="Viral_Load_copies_mL">
+                            Viral Load (copies/mL)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="Viral_Load_copies_mL"
+                            name="Viral_Load_copies_mL"
+                            min="0"
+                            placeholder="Example: 1000"
+                            required>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="button-container">
+
+                <button type="submit" class="predict-btn">
+
+                    <span class="btn-icon">🔍</span>
+
+                    Predict HIV Status
+
+                </button>
+
+            </div>
+
+        </form>
+
+        {% if prediction is not none %}
+
+            <div class="medical-disclaimer">
+
+                <strong>
+                    ⚕ Medical Disclaimer
+                </strong>
+
+                <p>
+                    This prediction is generated by a machine learning
+                    model and is intended for informational purposes only.
+                    It should not be considered a medical diagnosis.
+                    Please consult a qualified healthcare professional
+                    for proper medical evaluation and diagnosis.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

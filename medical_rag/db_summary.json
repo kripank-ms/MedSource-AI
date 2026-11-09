@@ -1,0 +1,214 @@
+{
+  "total_chunks": 7103,
+  "metadata_keys": [
+    "chunk_index",
+    "document_id",
+    "language",
+    "record_type",
+    "section",
+    "source",
+    "title",
+    "url"
+  ],
+  "chunks_per_source": {
+    "MedlinePlus": 3644,
+    "MedlinePlus Genetics": 3414,
+    "DailyMed": 45
+  },
+  "chunks_per_document_id_top20": [
+    [
+      "e087ce3b-8d7f-43a3-8d20-54513da7617d",
+      45
+    ],
+    [
+      "4213",
+      6
+    ],
+    [
+      "1943",
+      6
+    ],
+    [
+      "1930",
+      6
+    ],
+    [
+      "3230",
+      6
+    ],
+    [
+      "1877",
+      6
+    ],
+    [
+      "2176",
+      5
+    ],
+    [
+      "6197",
+      5
+    ],
+    [
+      "4147",
+      5
+    ],
+    [
+      "5401",
+      5
+    ],
+    [
+      "6602",
+      5
+    ],
+    [
+      "1819",
+      5
+    ],
+    [
+      "6784",
+      5
+    ],
+    [
+      "4917",
+      5
+    ],
+    [
+      "6426",
+      5
+    ],
+    [
+      "1805",
+      5
+    ],
+    [
+      "2110",
+      5
+    ],
+    [
+      "1786",
+      5
+    ],
+    [
+      "1942",
+      5
+    ],
+    [
+      "1833",
+      5
+    ]
+  ],
+  "metformin_sections": [
+    "1 INDICATIONS AND USAGE",
+    "10 OVERDOSAGE",
+    "11 DESCRIPTION",
+    "12.1 Mechanism of Action",
+    "12.3 Pharmacokinetics",
+    "13.1 Carcinogenesis and Mutagenesis and Impairment of Fertility",
+    "14 CLINICAL STUDIES",
+    "16 HOW SUPPLIED/STORAGE AND HANDLING",
+    "17 PATIENT COUNSELING INFORMATION",
+    "2.1 Adult Dosage",
+    "2.2 Pediatric Dosage",
+    "2.3 Recommendations for Use in Renal Impairment",
+    "2.4 Discontinuation for Iodinated Contrast Imaging Procedures",
+    "3 DOSAGE FORMS AND STRENGTHS",
+    "4 CONTRAINDICATIONS",
+    "5.1 Lactic Acidosis",
+    "5.2 Vitamin B 12 Deficiency",
+    "5.3 Hypoglycemia with Concomitant Use with Insulin and Insulin Secretagogues",
+    "5.4 Macrovascular Outcomes",
+    "6.1 Clinical Studies Experience",
+    "6.2 Postmarketing Experience",
+    "7 DRUG INTERACTIONS",
+    "8.1 Pregnancy",
+    "8.2 Lactation",
+    "8.3 Females and Males of Reproductive Potential",
+    "8.4 Pediatric Use",
+    "8.5 Geriatric Use",
+    "8.6 Renal Impairment",
+    "8.7 Hepatic Impairment",
+    "WARNING: LACTIC ACIDOSIS"
+  ],
+  "first_word_of_titles": [
+    "1",
+    "1,4-alpha-glucan",
+    "1-acylglycerol-3-phosphate",
+    "10",
+    "10q26",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "15q11-q13",
+    "15q13.3",
+    "15q24",
+    "16",
+    "16p11.2",
+    "16p12.2",
+    "17",
+    "17-beta",
+    "17q12",
+    "18",
+    "19",
+    "19p13.13",
+    "1p36",
+    "1q21.1",
+    "2",
+    "2-hydroxyglutaric",
+    "20",
+    "21",
+    "21-hydroxylase",
+    "22",
+    "22q11.2",
+    "22q13.3",
+    "24-dehydrocholesterol",
+    "2q37",
+    "3",
+    "3-M",
+    "3-beta-hydroxysteroid",
+    "3-hydroxy-3-methylglutaryl-CoA",
+    "3-hydroxyacyl-CoA",
+    "3-methylcrotonyl-CoA",
+    "3-methylglutaconyl-CoA",
+    "3-oxoacid",
+    "3MC",
+    "3p",
+    "3q29",
+    "4",
+    "4-aminobutyrate",
+    "4-hydroxy-2-oxoglutarate",
+    "4-hydroxyphenylpyruvate",
+    "46,XX",
+    "47,XYY",
+    "48,XXXY",
+    "48,XXYY",
+    "49,XXXXY",
+    "5",
+    "5'-aminolevulinate",
+    "5-alpha",
+    "5-methyltetrahydrofolate-homocysteine",
+    "5q",
+    "5q31.3",
+    "6",
+    "6-pyruvoyltetrahydropterin",
+    "6q24-related",
+    "7",
+    "7-dehydrocholesterol",
+    "7q11.23",
+    "8",
+    "8p11",
+    "9",
+    "9q22.3",
+    "A1C",
+    "ABL",
+    "ACAD9",
+    "ADAM",
+    "ADAMTS",
+    "ADCY5-related",
+    "ADNP",
+    "AHR",
+    "AKT",
+    "ALF"
+  ]
+}

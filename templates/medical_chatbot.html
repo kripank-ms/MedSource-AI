@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSource AI - Medical Assistant</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #7560f6;
+            --primary-dark: #6049e5;
+            --primary-light: #eeeaff;
+            --primary-soft: #f7f5ff;
+            --ink: #25243a;
+            --muted: #77758d;
+            --border: #e7e4f2;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f7fc;
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        .top-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            min-height: 82px;
+            padding: 0 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--navy);
+            white-space: nowrap;
+        }
+
+        .logo strong {
+            color: var(--primary-dark);
+        }
+
+        .logo-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background: linear-gradient(135deg, #7560f6, #8e15ff);
+            font-size: 23px;
+            box-shadow: 0 6px 15px rgba(8, 120, 249, 0.2);
+        }
+
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--primary);
+            background: #edf5ed;
+            padding: 10px 18px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+            border: 1px solid #d5e4f4;
+            border-radius: 8px;
+        }
+
+        .back-btn:hover {
+            background: #dcebdd;
+            border-color: var(--primary-dark);
+        }
+
+        /* MAIN CONTAINER */
+
+        .container {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 0 16px;
+        }
+
+        .page-heading {
+            margin-bottom: 22px;
+        }
+
+        .page-heading h2 {
+            font-size: 26px;
+            color: var(--ink);
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* CHAT CARD */
+
+        .chat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(70, 55, 130, 0.07);
+            overflow: hidden;
+        }
+
+        .notice {
+            padding: 14px 18px;
+            background: #fff8e8;
+            color: #775b16;
+            font-size: 13px;
+            line-height: 1.7;
+            border-bottom: 1px solid #f3e8c9;
+        }
+
+        #chat {
+            min-height: 350px;
+            max-height: 520px;
+            overflow-y: auto;
+            padding: 22px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .label {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: var(--primary);
+        }
+
+        .bubble {
+            padding: 14px 16px;
+            border-radius: 12px;
+            white-space: normal;
+            line-height: 1.7;
+        }
+
+        .user .bubble {
+            background: var(--primary-light);
+            color: #39305f;
+            border: 1px solid #e1dcff;
+        }
+
+        .assistant .bubble {
+            background: #f7f7fb;
+            color: #39384c;
+            border: 1px solid #eeedf5;
+        }
+
+        /* INPUT AREA */
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            padding: 18px;
+            border-top: 1px solid var(--border);
+            background: #fdfcff;
+        }
+
+        #question {
+            flex: 1;
+            min-width: 0;
+            padding: 14px;
+            border: 1px solid #dcd8ed;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        #question:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(117, 96, 246, 0.12);
+        }
+
+        #send {
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 0 24px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #send:hover {
+            background: var(--primary-dark);
+        }
+
+        #send:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .loading {
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        /* ANSWER CONTENT */
+
+        .answer-list {
+            margin: 0 0 12px;
+            padding-left: 22px;
+        }
+
+        .answer-list li {
+            margin-bottom: 8px;
+        }
+
+        .para {
+            margin: 0 0 10px;
+        }
+
+        .note {
+            margin: 12px 0;
+            padding: 10px 12px;
+            border-left: 4px solid #d97706;
+            background: #fff8e5;
+            color: #775b16;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+
+        .sources {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: #55536b;
+        }
+
+        .sources-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .source-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .source-id {
+            font-weight: bold;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 6px;
+            padding: 3px 7px;
+        }
+
+        .bubble a {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 550px) {
+            .top-header {
+                padding: 15px 5%;
+            }
+
+            .brand h1 {
+                font-size: 18px;
+            }
+
+            .brand p {
+                font-size: 11px;
+            }
+
+            .brand-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .back-btn {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+            .page-heading h2 {
+                font-size: 22px;
+            }
+
+            .input-area {
+                flex-direction: column;
+            }
+
+            #send {
+                padding: 14px;
+            }
+
+            #chat {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .brand {
+                gap: 7px;
+            }
+
+            .brand h1 {
+                font-size: 15px;
+            }
+
+            .brand p {
+                font-size: 10px;
+            }
+
+            .back-btn {
+                gap: 5px;
+                padding: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="top-header">
+
+        <div class="logo">
+            <span class="logo-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </span>
+
+            <span>MedSource <strong>AI</strong></span>
+        </div>
+
+        <a href="/home" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Home
+        </a>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+
+        <div class="page-heading">
+            <h2>Medical AI Assistant</h2>
+            <p>Ask questions and explore information from medical sources.</p>
+        </div>
+
+        <div class="chat-card">
+
+            <div class="notice">
+                <strong><i class="fa-solid fa-triangle-exclamation"></i> Important:</strong>
+                This assistant provides general medical information, not a
+                diagnosis or a substitute for a healthcare professional.
+                For emergencies, contact your local emergency service.
+            </div>
+
+            <div id="chat" aria-live="polite">
+
+                <div class="message assistant">
+                    <div class="label">MedSource AI Assistant</div>
+
+                    <div class="bubble">
+                        Hello! How can I help you understand a medical topic today?
+                    </div>
+                </div>
+
+            </div>
+
+            <form id="questionForm" class="input-area">
+
+                <input
+                    id="question"
+                    type="text"
+                    placeholder="Ask a medical question..."
+                    maxlength="2000"
+                    required
+                    autocomplete="off"
+                >
+
+                <button id="send" type="submit">
+                    <i class="fa-solid fa-paper-plane"></i> Ask
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        <i class="fa-solid fa-shield-halved"></i>
+        AI-generated information may be incomplete or incorrect.
+        Always verify important medical decisions with a qualified professional.
+        <br>
+        © MedSource AI · Medical Information Assistant
+    </footer>
+
+
+    <script>
+        const form = document.getElementById("questionForm");
+        const input = document.getElementById("question");
+        const chat = document.getElementById("chat");
+        const sendButton = document.getElementById("send");
+
+
+        function makeLink(url) {
+            const a = document.createElement("a");
+
+            a.href = url;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = "Open source";
+
+            return a;
+        }
+
+
+        function renderAnswer(text, container) {
+
+            container.textContent = "";
+
+            const parts = text.split(/\n\s*Sources:\s*\n/);
+
+            const bodyLines = parts[0]
+                .split("\n")
+                .map(l => l.trim())
+                .filter(Boolean);
+
+            let list = null;
+
+            for (const line of bodyLines) {
+
+                if (line.startsWith("- ")) {
+
+                    if (!list) {
+                        list = document.createElement("ul");
+                        list.className = "answer-list";
+                        container.appendChild(list);
+                    }
+
+                    const li = document.createElement("li");
+
+                    li.textContent = line
+                        .slice(2)
+                        .replace(/\s*\[S\d+\]/g, "");
+
+                    list.appendChild(li);
+
+                } else {
+
+                    list = null;
+
+                    const p = document.createElement("p");
+
+                    const isWarning = /^(Warning|Note):/.test(line);
+
+                    p.className = isWarning ? "note" : "para";
+                    p.textContent = line;
+
+                    container.appendChild(p);
+                }
+            }
+
+
+            if (parts[1]) {
+
+                const box = document.createElement("div");
+                box.className = "sources";
+
+                const heading = document.createElement("div");
+                heading.className = "sources-title";
+                heading.textContent = "Sources";
+
+                box.appendChild(heading);
+
+
+                for (const line of parts[1]
+                    .split("\n")
+                    .map(l => l.trim())
+                    .filter(Boolean)) {
+
+                    const m = line.match(
+                        /^\[(S\d+)\]\s*(.*?)(?:\s*\((https?:\/\/[^\s)]+)\))?$/
+                    );
+
+                    const row = document.createElement("div");
+                    row.className = "source-row";
+
+                    const id = document.createElement("span");
+                    id.className = "source-id";
+                    id.textContent = m ? m[1] : "";
+
+                    row.appendChild(id);
+
+                    const name = document.createElement("span");
+                    name.textContent = m ? (m[2] || "Source") : line;
+
+                    row.appendChild(name);
+
+                    if (m && m[3]) {
+                        row.appendChild(makeLink(m[3]));
+                    }
+
+                    box.appendChild(row);
+                }
+
+                container.appendChild(box);
+            }
+        }
+
+
+        function addMessage(label, text, className) {
+
+            const message = document.createElement("div");
+            message.className = `message ${className}`;
+
+            const heading = document.createElement("div");
+            heading.className = "label";
+            heading.textContent = label;
+
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+
+            // Display model output as text, not HTML.
+            bubble.textContent = text;
+
+            message.appendChild(heading);
+            message.appendChild(bubble);
+
+            chat.appendChild(message);
+
+            chat.scrollTop = chat.scrollHeight;
+
+            return message;
+        }
+
+
+        form.addEventListener("submit", async (event) => {
+
+            event.preventDefault();
+
+            const question = input.value.trim();
+
+            if (!question) {
+                return;
+            }
+
+            addMessage("You", question, "user");
+
+            input.value = "";
+            input.disabled = true;
+            sendButton.disabled = true;
+
+
+            const loadingMessage = addMessage(
+                "MedSource AI Assistant",
+                "Searching medical sources and preparing an answer...",
+                "assistant"
+            );
+
+            loadingMessage
+                .querySelector(".bubble")
+                .classList.add("loading");
+
+
+            try {
+
+                const response = await fetch("/ask_medical_question", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({ question })
+
+                });
+
+
+                if (!response.ok) {
+                    throw new Error("Request failed");
+                }
+
+                const data = await response.json();
+
+                renderAnswer(
+                    data.answer || "No answer was returned.",
+                    loadingMessage.querySelector(".bubble")
+                );
+
+            } catch (error) {
+
+                loadingMessage
+                    .querySelector(".bubble")
+                    .textContent =
+                    "Unable to contact the medical assistant. Please try again.";
+
+            } finally {
+
+                loadingMessage
+                    .querySelector(".bubble")
+                    .classList.remove("loading");
+
+                input.disabled = false;
+                sendButton.disabled = false;
+
+                input.focus();
+
+                chat.scrollTop = chat.scrollHeight;
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

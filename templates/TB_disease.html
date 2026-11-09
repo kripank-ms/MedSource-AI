@@ -4,334 +4,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CKD Prediction System</title>
+    <title>Tuberculosis Prediction System</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        body {
-            background: #f5f7fa;
-            justify-content: center;
-            padding: 30px;
-        }
-    
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #0d6efd;
-            margin-bottom: 25px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 15px;
-        }
-
-        button {
-            width: 100%;
-            margin-top: 25px;
-            padding: 12px;
-            background: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #0b5ed7;
-        }
-
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 18px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-        }
-        .back-btn:hover {
-            background-color: #0056b3;
-        }
-        .message_box{
-            text-align: center;
-        }
-    </style>
-
+    <link rel="stylesheet"
+          href="static/css/medical_prediction.css">
 </head>
 
 <body>
 
-    <div class="container">
-        <a href="/disease_prediction" class="back-btn">← Back</a>
+<div class="page-container">
 
+    <a href="/disease_prediction" class="back-btn">← Back</a>
 
-        <h1>Tuberculosis Prediction System</h1>
+    {% if prediction is not none %}
 
-        <form action="/predict_tb" method="post">
-            <div class="grid">
+            {% if prediction == 1 %}
 
-                <div>
-                    <label>Age</label>
-                    <input type="number" name="Age" min="1" max="120" required>
+            <div class="result-section high-risk">
+
+                <div class="result-icon">
+                    ⚠
                 </div>
 
                 <div>
-                    <label>Gender</label>
-                    <select name="Gender">
-                        <option value="1">Male</option>
-                        <option value="0">Female</option>
-                    </select>
-                </div>
 
-                <div>
-                    <label>Body Mass Index (BMI)</label>
-                    <input type="number" step="0.1" name="BMI" min="10" max="150" required>
-                </div>
+                    <h2>
+                        Tuberculosis Risk Detected
+                    </h2>
 
-                <div>
-                    <label>Smoking</label>
-                    <select name="Smoking">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
+                    <div class="prediction-result">
+                        Higher Risk of Tuberculosis
+                    </div>
 
-                <div>
-                    <label>Alcohol Use</label>
-                    <select name="Alcohol_Use">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
+                    <div class="confidence">
+                        Based on the information provided,
+                        the model indicates a higher likelihood
+                        of Tuberculosis infection.
+                    </div>
 
-                <div>
-                    <label>HIV</label>
-                    <select name="HIV">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Diabetes</label>
-                    <select name="Diabetes">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Previous Tuberculosis</label>
-                    <select name="Previous_TB">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Household TB Contact</label>
-                    <select name="Household_TB_Contact">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Persistent Cough</label>
-                    <select name="Persistent_Cough">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Cough Duration (Days)</label>
-                    <input type="number" name="Cough_Duration_Days" min="0" max="365" required>
-                </div>
-
-                <div>
-                    <label>Blood in Sputum</label>
-                    <select name="Blood_in_Sputum">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Chest Pain</label>
-                    <select name="Chest_Pain">
-                        <option value="0">No</option>
-                        <option value="1">Mild</option>
-                        <option value="2">Moderate</option>
-                        <option value="3">Severe</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Fever</label>
-                    <select name="Fever">
-                        <option value="0">No</option>
-                        <option value="1">Mild</option>
-                        <option value="2">Moderate</option>
-                        <option value="3">High</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Night Sweats</label>
-                    <select name="Night_Sweats">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Weight Loss</label>
-                    <select name="Weight_Loss">
-                        <option value="0">No</option>
-                        <option value="1">Mild</option>
-                        <option value="2">Moderate</option>
-                        <option value="3">Severe</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Fatigue</label>
-                    <select name="Fatigue">
-                        <option value="0">No</option>
-                        <option value="1">Mild</option>
-                        <option value="2">Moderate</option>
-                        <option value="3">Severe</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Appetite Loss</label>
-                    <select name="Appetite_Loss">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Oxygen Saturation (%)</label>
-                    <input type="number" name="Oxygen_Saturation" min="40" max="100" required>
-                </div>
-
-                <div>
-                    <label>ESR (mm/hr)</label>
-                    <input type="number" step="0.1" name="ESR" min="0" max="160" required>
-                </div>
-
-                <div>
-                    <label>WBC Count (×10³/µL)</label>
-                    <input type="number" step="0.1" name="WBC_Count" min="3" max="30" required>
-                </div>
-
-                <div>
-                    <label>Chest X-ray Result</label>
-                    <select name="Chest_Xray_Result">
-                        <option value="0">Normal</option>
-                        <option value="1">Suspicious</option>
-                        <option value="2">Abnormal</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Socioeconomic Status</label>
-                    <select name="Socioeconomic_Status">
-                        <option value="0">High</option>
-                        <option value="1">Middle</option>
-                        <option value="2">Low</option>
-                    </select>
-                </div>
-
-
-                <div>
-                    <label>GeneXpert Result</label>
-                    <select name="GeneXpert_Result">
-                        <option value="Negative">Negative</option>
-                        <option value="Positive">Positive</option>
-                        <option value="Inconclusive">Inconclusive</option>
-                    </select>
                 </div>
 
             </div>
 
-            <button type="submit">Predict Tuberculosis</button>
+            {% else %}
+
+            <div class="result-section low-risk">
+
+                <div class="result-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h2>
+                        Lower Tuberculosis Risk
+                    </h2>
+
+                    <div class="prediction-result">
+                        Lower Risk of Tuberculosis
+                    </div>
+
+                    <div class="confidence">
+                        Based on the information provided,
+                        the model indicates a lower likelihood
+                        of Tuberculosis infection.
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        {% endif %}
+
+    <div class="prediction-card">
+
+        <div class="page-header">
+            <div class="medical-icon">🫁</div>
+            <div>
+                <h1>Tuberculosis Prediction System</h1>
+                <p>Enter patient information to estimate tuberculosis risk.</p>
+            </div>
+        </div>
+
+
+        <form action="/predict_tb" method="post">
+
+            <div class="section">
+
+                <h2 class="section-title">
+                    <span>1</span> Basic Patient Information
+                </h2>
+
+                <p class="section-description">
+                    Enter the patient's demographic and physical information.
+                </p>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" name="Age"
+                               min="1" max="120" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select name="Gender" required>
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Body Mass Index (BMI)</label>
+                        <input type="number" step="0.1"
+                               name="BMI" min="10" max="150" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Socioeconomic Status</label>
+                        <select name="Socioeconomic_Status" required>
+                            <option value="0">High</option>
+                            <option value="1">Middle</option>
+                            <option value="2">Low</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- SECTION 2: LIFESTYLE AND MEDICAL HISTORY -->
+            <div class="section">
+
+                <h2 class="section-title">
+                    <span>2</span> Lifestyle & Medical History
+                </h2>
+
+                <p class="section-description">
+                    Provide information about lifestyle habits and previous
+                    medical conditions.
+                </p>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Smoking</label>
+                        <select name="Smoking" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Alcohol Use</label>
+                        <select name="Alcohol_Use" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>HIV</label>
+                        <select name="HIV" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Diabetes</label>
+                        <select name="Diabetes" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Previous Tuberculosis</label>
+                        <select name="Previous_TB" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Household TB Contact</label>
+                        <select name="Household_TB_Contact" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- SECTION 3: TB SYMPTOMS -->
+            <div class="section">
+
+                <h2 class="section-title">
+                    <span>3</span> Tuberculosis Symptoms
+                </h2>
+
+                <p class="section-description">
+                    Select the symptoms experienced by the patient.
+                </p>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Persistent Cough</label>
+                        <select name="Persistent_Cough" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cough Duration (Days)</label>
+                        <input type="number"
+                               name="Cough_Duration_Days"
+                               min="0" max="365" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Blood in Sputum</label>
+                        <select name="Blood_in_Sputum" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chest Pain</label>
+                        <select name="Chest_Pain" required>
+                            <option value="0">No</option>
+                            <option value="1">Mild</option>
+                            <option value="2">Moderate</option>
+                            <option value="3">Severe</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fever</label>
+                        <select name="Fever" required>
+                            <option value="0">No</option>
+                            <option value="1">Mild</option>
+                            <option value="2">Moderate</option>
+                            <option value="3">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Night Sweats</label>
+                        <select name="Night_Sweats" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Weight Loss</label>
+                        <select name="Weight_Loss" required>
+                            <option value="0">No</option>
+                            <option value="1">Mild</option>
+                            <option value="2">Moderate</option>
+                            <option value="3">Severe</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fatigue</label>
+                        <select name="Fatigue" required>
+                            <option value="0">No</option>
+                            <option value="1">Mild</option>
+                            <option value="2">Moderate</option>
+                            <option value="3">Severe</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Appetite Loss</label>
+                        <select name="Appetite_Loss" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="section">
+
+                <h2 class="section-title">
+                    <span>4</span> Clinical Measurements
+                </h2>
+
+                <p class="section-description">
+                    Enter the patient's oxygen saturation and laboratory
+                    measurement results.
+                </p>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Oxygen Saturation (%)</label>
+                        <input type="number"
+                               name="Oxygen_Saturation"
+                               min="40" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ESR (mm/hr)</label>
+                        <input type="number" step="0.1"
+                               name="ESR" min="0" max="160" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>WBC Count (×10³/µL)</label>
+                        <input type="number" step="0.1"
+                               name="WBC_Count" min="3" max="30" required>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="section">
+
+                <h2 class="section-title">
+                    <span>5</span> Diagnostic Test Results
+                </h2>
+
+                <p class="section-description">
+                    Enter the available chest X-ray and GeneXpert test results.
+                </p>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Chest X-ray Result</label>
+                        <select name="Chest_Xray_Result" required>
+                            <option value="0">Normal</option>
+                            <option value="1">Suspicious</option>
+                            <option value="2">Abnormal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>GeneXpert Result</label>
+                        <select name="GeneXpert_Result" required>
+                            <option value="Negative">Negative</option>
+                            <option value="Positive">Positive</option>
+                            <option value="Inconclusive">Inconclusive</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="button-container">
+
+                <button type="submit" class="predict-btn">
+                    <span class="btn-icon">🔍</span>
+                    Predict Tuberculosis Risk
+                </button>
+
+            </div>
+
         </form>
+
+       {% if prediction is not none %}
+
+         <div class="medical-disclaimer">
+
+                <strong>
+                    ⚕ Medical Disclaimer
+                </strong>
+
+                <p>
+                    This prediction is generated by a machine learning
+                    model and is intended for informational purposes only.
+                    It should not be considered a medical diagnosis.
+                    Please consult a qualified healthcare professional
+                    for proper medical evaluation and diagnosis.
+                </p>
+
+            </div>
+
+        {% endif %}
+
     </div>
 
-
-<div class="message_box">
-
-{% if prediction is not none %}
-
-{% if prediction == 1 %}
-
-<h2 style="color:#d32f2f;">
-⚠️ Tuberculosis (TB) Risk: Positive
-</h2>
-
-<p>
-The prediction model suggests that you may be at an increased risk of Tuberculosis (TB).
-This result is intended for screening purposes only and is not a medical diagnosis.
-Please consult a healthcare professional promptly for a complete clinical evaluation and confirmatory tests such as sputum examination, GeneXpert testing, chest X-ray, or other investigations as recommended.
-Early diagnosis and appropriate treatment are important to prevent disease progression and transmission.
-</p>
-
-{% endif %}
-
-{% if prediction == 0 %}
-
-<h2 style="color:#2e7d32;">
-✅ Tuberculosis (TB) Risk: Negative
-</h2>
-
-<p>
-The prediction model suggests a lower likelihood of Tuberculosis (TB).
-This result does not guarantee the absence of TB, especially if symptoms such as a persistent cough, fever, night sweats, weight loss, or blood in sputum are present.
-Continue maintaining good respiratory hygiene, a healthy lifestyle, and seek medical advice if symptoms persist or worsen.
-</p>
-
-{% endif %}
-
-{% endif %}
-
 </div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+
+[
+  {
+    "id": 1,
+    "question": "What is metformin used for?",
+    "expected_topic": "indication"
+  },
+  {
+    "id": 2,
+    "question": "What is the recommended adult dosage of metformin?",
+    "expected_topic": "dosage"
+  },
+  {
+    "id": 3,
+    "question": "What warnings and precautions are listed for metformin?",
+    "expected_topic": "warnings"
+  },
+  {
+    "id": 4,
+    "question": "What are the contraindications for metformin?",
+    "expected_topic": "contraindication"
+  },
+  {
+    "id": 5,
+    "question": "What adverse reactions are listed for metformin?",
+    "expected_topic": "adverse_reactions"
+  }
+]

@@ -2,9 +2,7 @@ import numpy as np
 import cv2
 
 def clahe_preprocess(image, preprocess_fn):
-    print(image.shape)
     image = image.astype(np.uint8)
-    print(image.shape)
     lab = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
     l, a, b = cv2.split(lab)
 

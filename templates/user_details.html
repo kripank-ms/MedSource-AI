@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Account | MedSource AI</title>
+<link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f7f2;
+    color: #263b30;
+}
+
+.navbar {
+    min-height: 82px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    background: #ffffff;
+    border-bottom: 1px solid #edf2f8;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+}
+
+.logo strong {
+    color: #0878f9;
+}
+
+.logo-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: linear-gradient(135deg, #1598ff, #0862df);
+    font-size: 23px;
+    box-shadow: 0 6px 15px rgba(8, 120, 249, 0.2);
+}
+
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 11px 15px;
+    border: 1px solid #0878f9;
+    border-radius: 10px;
+    background: #f3f8ff;
+    color: #0878f9;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.back-btn > i:first-child {
+    font-size: 20px;
+    color: #0878f9;
+}
+
+.back-btn > i:last-child {
+    font-size: 10px;
+    color: #71859c;
+}
+
+.back-btn:hover {
+    background: #e7f2ff;
+    border-color: #b7d7ff;
+    transform: translateY(-2px);
+}
+
+.container {
+    max-width: 700px;
+    margin: 65px auto;
+    padding: 20px;
+}
+
+.heading {
+    margin-bottom: 30px;
+}
+
+.heading h1 {
+    font-size: 29px;
+    margin-bottom: 10px;
+}
+
+.heading p {
+    color: #829087;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 18px #00000008;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: #e4efe5;
+    color: #28734e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.profile h2 {
+    margin-bottom: 8px;
+}
+
+.profile p {
+    color: #829087;
+    font-size: 14px;
+}
+
+.section-title {
+    margin-bottom: 23px;
+}
+
+.info {
+    margin-bottom: 22px;
+}
+
+.info label {
+    display: block;
+    font-size: 13px;
+    color: #829087;
+    margin-bottom: 8px;
+}
+
+.info input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #e2e9e2;
+    background: #f8faf7;
+    border-radius: 7px;
+    font-size: 14px;
+    color: #263b30;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.green {
+    background: #28734e;
+    color: white;
+}
+
+.red {
+    background: #c83f3f;
+    color: white;
+}
+
+.danger {
+    border: 1px solid #f0dddd;
+}
+
+.danger h3 {
+    color: #c83f3f;
+    margin-bottom: 12px;
+}
+
+.danger p {
+    color: #829087;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+/* Password Modal */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #00000080;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 420px;
+    background: white;
+    padding: 30px;
+    border-radius: 13px;
+}
+
+.modal-box h2 {
+    margin-bottom: 20px;
+}
+
+.modal-box input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    margin-bottom: 15px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.message {
+    font-size: 13px;
+    margin-top: 15px;
+}
+
+@media(max-width:550px) {
+    .container {
+        margin: 25px auto;
+    }
+
+    .card {
+        padding: 22px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+            <span class="logo-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </span>
+
+            <span>MedSource <strong>AI</strong></span>
+    </div>
+    <a href="/home" class="back-btn">Dashboard</a>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="heading">
+
+        <h1>My Account</h1>
+
+        <p>Manage your account and security settings.</p>
+
+    </div>
+
+
+    <!-- Profile -->
+
+    <div class="card profile">
+
+        <div class="avatar">👤</div>
+
+        <div>
+
+            <h2>{{ name }}</h2>
+
+            <p>{{ email }}</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Account Information -->
+
+    <div class="card">
+
+        <h3 class="section-title">Account Information</h3>
+
+        <div class="info">
+
+            <label>Full Name</label>
+
+            <input type="text" value="{{ name }}" readonly>
+
+        </div>
+
+        <div class="info">
+
+            <label>Email Address</label>
+
+            <input type="email" value="{{ email }}" readonly>
+
+        </div>
+
+    </div>
+
+
+    <!-- Security -->
+
+    <div class="card">
+
+        <h3 class="section-title">Security Settings</h3>
+
+        <p style="color:#829087;font-size:14px;margin-bottom:20px;">
+
+            Keep your account secure by updating your password.
+
+        </p>
+
+        <button class="btn green" onclick="openPassword()">
+
+            Update Password
+
+        </button>
+
+    </div>
+
+
+    <!-- Delete Account -->
+
+    <div class="card danger">
+
+        <h3>Delete Account</h3>
+
+        <p>
+
+            Permanently delete your MedSource AI account.
+
+            This action cannot be undone.
+
+        </p>
+
+        <button class="btn red" onclick="openDelete()">
+
+            Delete My Account
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- Update Password Modal -->
+
+<div class="modal" id="passwordModal">
+
+    <div class="modal-box">
+
+        <h2>Update Password</h2>
+
+        <input type="password" id="oldPassword"
+               placeholder="Current Password">
+
+        <input type="password" id="newPassword"
+               placeholder="New Password">
+
+        <input type="password" id="confirmPassword"
+               placeholder="Confirm New Password">
+
+        <div class="modal-buttons">
+
+            <button class="btn" onclick="closeModals()">
+
+                Cancel
+
+            </button>
+
+            <button class="btn green" onclick="updatePassword()">
+
+                Update Password
+
+            </button>
+
+        </div>
+
+        <p class="message" id="passwordMessage"></p>
+
+    </div>
+
+</div>
+
+
+<!-- Delete Confirmation Modal -->
+
+<div class="modal" id="deleteModal">
+
+    <div class="modal-box">
+
+        <h2 style="color:#c83f3f;">Delete Account?</h2>
+
+        <p style="color:#829087;margin-bottom:20px;">
+
+            Enter your password to confirm permanent account deletion.
+
+        </p>
+
+        <input type="password" id="deletePassword"
+               placeholder="Enter your password">
+
+        <div class="modal-buttons">
+
+            <button class="btn" onclick="closeModals()">
+
+                Cancel
+
+            </button>
+
+            <button class="btn red" onclick="deleteAccount()">
+
+                Yes, Delete
+
+            </button>
+
+        </div>
+
+        <p class="message" id="deleteMessage"></p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function openPassword() {
+
+    document.getElementById("passwordModal").style.display = "flex";
+
+}
+
+function openDelete() {
+
+    document.getElementById("deleteModal").style.display = "flex";
+
+}
+
+function closeModals() {
+
+    document.getElementById("passwordModal").style.display = "none";
+
+    document.getElementById("deleteModal").style.display = "none";
+
+}
+
+
+async function updatePassword() {
+
+    let oldPassword = document.getElementById("oldPassword").value;
+
+    let newPassword = document.getElementById("newPassword").value;
+
+    let confirmPassword = document.getElementById("confirmPassword").value;
+
+    let message = document.getElementById("passwordMessage");
+
+    if (!oldPassword || !newPassword || !confirmPassword) {
+
+        message.innerText = "Please fill all fields.";
+
+        return;
+
+    }
+
+    if (newPassword !== confirmPassword) {
+
+        message.innerText = "New passwords do not match.";
+
+        return;
+
+    }
+
+    if (newPassword.length < 8) {
+
+        message.innerText = "Password must contain at least 8 characters.";
+
+        return;
+
+    }
+
+    try {
+
+        let response = await fetch("/update_password", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                old_password: oldPassword,
+
+                new_password: newPassword
+
+            })
+
+        });
+
+        let result = await response.json();
+
+        message.innerText = result.message || result.detail;
+
+        if (response.ok) {
+
+            document.getElementById("oldPassword").value = "";
+
+            document.getElementById("newPassword").value = "";
+
+            document.getElementById("confirmPassword").value = "";
+
+        }
+
+    } catch(error) {
+
+        message.innerText = "Server connection error.";
+
+    }
+
+}
+
+
+async function deleteAccount() {
+
+    let password = document.getElementById("deletePassword").value;
+
+    let message = document.getElementById("deleteMessage");
+
+    if (!password) {
+
+        message.innerText = "Please enter your password.";
+
+        return;
+
+    }
+
+    if (!confirm("Are you sure you want to permanently delete your account?")) {
+
+        return;
+
+    }
+
+    try {
+
+        let response = await fetch("/delete_account", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                password: password
+
+            })
+
+        });
+
+        let result = await response.json();
+
+        if (response.ok) {
+
+            window.location.href = "/account_deleted";
+
+        } else {
+
+            message.innerText = result.detail || "Deletion failed.";
+
+        }
+
+    } catch(error) {
+
+        message.innerText = "Server connection error.";
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

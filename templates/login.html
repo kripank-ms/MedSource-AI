@@ -1,125 +1,502 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Login Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
+    <title>Login | MedSource AI</title>
 
-    body {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
 
-    .login-box {
-        width: 350px;
-        padding: 40px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        text-align: center;
-    }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background: #f4f5ed;
+            color: #203a32;
+        }
 
-    .login-box h2 {
-        margin-bottom: 25px;
-        color: #333;
-    }
+        /* Main container */
 
-    .input-box {
-        margin-bottom: 15px;
-        text-align: left;
-    }
+        .login-container {
+            width: 100%;
+            max-width: 1000px;
+            min-height: 570px;
+            display: flex;
+            overflow: hidden;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 15px 50px rgba(31, 69, 53, 0.12);
+        }
 
-    .input-box label {
-        font-size: 14px;
-        color: #555;
-    }
+        /* Left medical information section */
 
-    .input-box input {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        outline: none;
-        transition: 0.3s;
-    }
+        .medical-section {
+            width: 50%;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #e4eee4;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .input-box input:focus {
-        border-color: #4facfe;
-        box-shadow: 0 0 5px rgba(79,172,254,0.5);
-    }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-    .btn {
-        width: 100%;
-        padding: 10px;
-        background: #4facfe;
-        border: none;
-        color: white;
-        font-size: 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #285c46;
+            color: white;
+            border-radius: 14px;
+            font-size: 27px;
+            font-weight: bold;
+        }
 
-    .btn:hover {
-        background: #0077ff;
-    }
+        .brand h2 {
+            font-size: 23px;
+            color: #234b39;
+            letter-spacing: -0.5px;
+        }
 
-    .extra {
-        margin-top: 15px;
-        font-size: 14px;
-    }
+        .brand h2 span {
+            color: #6d987d;
+        }
 
-    .extra a {
-        color: #4facfe;
-        text-decoration: none;
-    }
+        .medical-content {
+            position: relative;
+            z-index: 1;
+            margin: 45px 0;
+        }
 
-    .extra a:hover {
-        text-decoration: underline;
-    }
-</style>
+        .tag {
+            display: inline-block;
+            padding: 8px 14px;
+            background: #d1e5d5;
+            color: #285c46;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+        }
+
+        .medical-content h1 {
+            font-size: 37px;
+            line-height: 1.25;
+            color: #203f31;
+            margin-bottom: 18px;
+        }
+
+        .medical-content h1 span {
+            color: #568367;
+        }
+
+        .medical-content p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #607568;
+            max-width: 370px;
+        }
+
+        /* Medical illustration */
+
+        .medical-illustration {
+            height: 115px;
+            width: 115px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            background: #c8dfce;
+            border: 1px solid #b4d0bb;
+            border-radius: 50%;
+            color: #285c46;
+            font-size: 65px;
+            box-shadow: 0 0 0 18px rgba(200, 223, 206, 0.35);
+        }
+
+        .medical-footer {
+            font-size: 12px;
+            color: #6b8173;
+            line-height: 1.6;
+        }
+
+        /* Right login section */
+
+        .login-section {
+            width: 50%;
+            padding: 55px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-heading {
+            margin-bottom: 32px;
+        }
+
+        .login-heading h2 {
+            font-size: 30px;
+            color: #233f32;
+            margin-bottom: 10px;
+        }
+
+        .login-heading p {
+            color: #849188;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Form fields */
+
+        .input-box {
+            margin-bottom: 22px;
+        }
+
+        .input-box label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #40584a;
+            margin-bottom: 9px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #dce4dc;
+            background: #fafbf8;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #263f32;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #a0aaa2;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #568367;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(86, 131, 103, 0.10);
+        }
+
+        /* Remember and forgot password */
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 27px;
+            font-size: 12px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #718076;
+        }
+
+        .remember input {
+            accent-color: #285c46;
+        }
+
+        .form-options a {
+            color: #397354;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        /* Login button */
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #285c46;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #1d4835;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 18px rgba(40, 92, 70, 0.18);
+        }
+
+        /* Registration link */
+
+        .signup {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #7b8980;
+        }
+
+        .signup a {
+            color: #397354;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .signup a:hover {
+            text-decoration: underline;
+        }
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 35px;
+            color: #87958b;
+            font-size: 11px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .security-icon {
+            color: #568367;
+            font-size: 17px;
+        }
+
+        /* Responsive design */
+
+        @media (max-width: 768px) {
+
+            body {
+                padding: 18px;
+                align-items: flex-start;
+            }
+
+            .login-container {
+                max-width: 450px;
+                flex-direction: column;
+            }
+
+            .medical-section {
+                width: 100%;
+                padding: 30px;
+                min-height: auto;
+            }
+
+            .medical-content {
+                margin: 35px 0 20px;
+            }
+
+            .medical-content h1 {
+                font-size: 29px;
+            }
+
+            .medical-content p {
+                font-size: 14px;
+            }
+
+            .medical-illustration {
+                width: 75px;
+                height: 75px;
+                font-size: 42px;
+                margin-top: 25px;
+            }
+
+            .medical-footer {
+                margin-top: 20px;
+            }
+
+            .login-section {
+                width: 100%;
+                padding: 35px 30px;
+            }
+
+            .login-heading h2 {
+                font-size: 27px;
+            }
+        }
+
+        @media (max-width: 380px) {
+
+            .login-section,
+            .medical-section {
+                padding: 25px 20px;
+            }
+
+            .medical-content h1 {
+                font-size: 25px;
+            }
+
+            .form-options {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="login-box">
-    <h2>Login</h2>
+    <div class="login-container">
 
-    <form action="/login" method="POST">
-        <div class="input-box">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Enter Email" required>
-        </div>
+        <!-- Left medical information section -->
 
-        <div class="input-box">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter password" required>
-        </div>
+        <section class="medical-section">
 
-        <button class="btn" type="submit">Login</button>
-    </form>
+            <div class="brand">
+                <div class="brand-icon">+</div>
 
-    <div class="extra">
-        <a href="/face_login">Face Login</a> 
+                <h2>MedSource <span>AI</span></h2>
+            </div>
+
+            <div class="medical-content">
+
+                <span class="tag">INTELLIGENT HEALTHCARE</span>
+
+                <h1>
+                    Smarter Healthcare.<br>
+                    <span>Better Insights.</span>
+                </h1>
+
+                <p>
+                    Welcome to MedSource AI, your intelligent healthcare
+                    platform for medical image analysis, disease prediction,
+                    and AI-powered medical information.
+                </p>
+
+                <div class="medical-illustration">
+                    +
+                </div>
+
+            </div>
+
+            <div class="medical-footer">
+                © 2026 MedSource AI. All rights reserved.
+            </div>
+
+        </section>
+
+
+        <!-- Right login form -->
+
+        <section class="login-section">
+
+            <div class="login-heading">
+                <h2>Welcome Back!</h2>
+
+                <p>
+                    Sign in to continue to your MedSource AI account.
+                </p>
+            </div>
+
+            <form action="/login" method="POST">
+
+                <div class="input-box">
+
+                    <label for="email">Email Address</label>
+
+                    <div class="input-wrapper">
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email address"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="input-box">
+
+                    <label for="password">Password</label>
+
+                    <div class="input-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="form-options">
+
+                    <label class="remember">
+                        <input type="checkbox" name="remember">
+                        Remember me
+                    </label>
+
+                    <a href="/forgot_password">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <button type="submit" class="btn">
+                    Sign In to MedSource AI
+                </button>
+
+            </form>
+
+
+            <div class="signup">
+                Don't have an account?
+                <a href="/register_page">Create an account</a>
+            </div>
+
+
+            <div class="security-note">
+                <span class="security-icon">✚</span>
+
+                <span>
+                    Your health information deserves care and protection.
+                    <br>
+                    Use this platform for informational purposes only.
+                </span>
+            </div>
+
+        </section>
+
     </div>
-
-    <div class="extra">
-        <p>Don't have an account? <a href="/register_page">Sign up</a></p>
-    </div>
-    
-</div>
 
 </body>
 

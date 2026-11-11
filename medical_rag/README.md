@@ -1,131 +1,293 @@
-# Medical RAG
+# 💬 Medical RAG
 
-A learning project that answers medical questions using text retrieved from
-reference sources (DailyMed drug labels and MedlinePlus health topics). It
-retrieves relevant passages, asks a local language model to write claims
-grounded in those passages, checks each claim against its cited source, and
-shows the sources.
+**Medical RAG is the Retrieval-Augmented Generation component of [MedSource AI](../README.md).**
 
-**This is educational information only. It is not medical advice and does not
-replace a doctor or pharmacist.** Dosing and safety details come from the drug
-label text in the index. Always check the label or ask a healthcare professional.
+It answers medical questions by retrieving relevant information from reference sources and providing that context to a local language model.
 
-## How it works
+The system retrieves relevant passages, asks the local language model to generate claims grounded in those passages, verifies the claims against their cited sources, and displays the sources used for the answer.
 
-1. Detect the question's intent (for example `dosage`, `indication`, `adverse_reactions`).
-2. Embed the question and search ChromaDB for candidate passages.
-3. Rerank the candidates with a CrossEncoder model.
-4. Boost preferred label sections for the intent, remove dosing sections for the
-   wrong population (adult or pediatric), and keep the best 3 passages.
-5. Ask the local model (Ollama) for claims, using only the passages.
-6. Verify each claim: numbers and units must appear in the cited source, and an
-   LLM check must say the source supports the claim.
-7. Remove failed claims, retry once when a number was wrong, and show a warning
-   or note when information was left out.
-8. Print the answer with numbered sources and URLs.
+> **Educational information only. This system is not medical advice and does not replace a doctor or pharmacist.**
 
-Main code: `src/rag.py` (function `answer_question()` is the entry point).
+---
 
-## Project layout
+## 🧠 How It Works
 
+```text
+User Question
+      │
+      ▼
+Intent Detection
+      │
+      ▼
+Question Embedding
+      │
+      ▼
+ChromaDB Vector Search
+      │
+      ▼
+Candidate Passages
+      │
+      ▼
+CrossEncoder Reranking
+      │
+      ▼
+Best Relevant Passages
+      │
+      ▼
+Ollama / Qwen3 8B
+      │
+      ▼
+Generated Claims
+      │
+      ▼
+Claim Verification
+      │
+      ▼
+Grounded Response
+      │
+      ▼
+Cited Sources
 ```
+
+---
+
+## 🔎 Retrieval Pipeline
+
+1. Detect the question's intent, such as:
+   - `dosage`
+   - `indication`
+   - `adverse_reactions`
+
+2. Embed the user's question.
+
+3. Search ChromaDB for candidate passages.
+
+4. Rerank candidates using a CrossEncoder model.
+
+5. Apply intent-specific section boosting.
+
+6. Remove inappropriate dosing sections when the population does not match.
+
+7. Keep the best relevant passages.
+
+8. Send the retrieved context to the local LLM.
+
+9. Generate claims based only on the retrieved passages.
+
+10. Verify each claim against its cited source.
+
+11. Remove unsupported claims.
+
+12. Retry once when a numerical claim fails verification.
+
+13. Return the grounded response with numbered sources.
+
+---
+
+## 🧩 RAG Technology Stack
+
+| Component | Technology |
+|---|---|
+| Vector database | ChromaDB |
+| Embedding model | all-MiniLM-L6-v2 |
+| Reranker | ms-marco-MiniLM-L-6-v2 |
+| LLM runtime | Ollama |
+| Language model | Qwen3 8B |
+| Backend integration | FastAPI |
+| Source documents | DailyMed / MedlinePlus |
+| Programming language | Python |
+
+### MongoDB vs ChromaDB
+
+MedSource AI uses two different databases for different purposes:
+
+```text
+MongoDB
+   │
+   └── User/account information
+
+
+ChromaDB
+   │
+   └── RAG document chunks + embeddings
+```
+
+MongoDB is **not** used as the RAG vector database.
+
+---
+
+## 📁 Project Structure
+
+```text
 medical_rag/
 ├── src/
-│   ├── rag.py                 # question answering pipeline (main file)
-│   ├── intent.py              # older intent module, see Known issues
-│   ├── chunker.py             # splits documents into chunks
-│   ├── parse_dailymed.py      # downloads/parses DailyMed labels
-│   ├── parse_medlineplus.py   # parses MedlinePlus XML topics
-│   ├── parse_genetics.py      # parses genetics content
-│   ├── dailymed_chunks.py     # builds DailyMed chunks
+│   ├── rag.py
+│   ├── chunker.py
+│   ├── parse_dailymed.py
+│   ├── parse_medlineplus.py
+│   ├── parse_genetics.py
+│   ├── dailymed_chunks.py
 │   ├── create_genetics_chunks.py
-│   ├── vector_store.py        # writes chunks into ChromaDB
-│   ├── embeddings.py          # embedding helper
-│   ├── evaluate_retrieval.py  # retrieval evaluation
+│   ├── vector_store.py
+│   ├── evaluate_retrieval.py
 │   ├── evaluate_groundedness.py
-│   └── loaders/               # JSON, TXT and XML loaders
+│   └── loaders/
+│       ├── JSON loaders
+│       ├── TXT loaders
+│       └── XML loaders
+│
 ├── tests/
-│   ├── check_quality.py       # quality checks for the 5 metformin questions (needs models)
-│   ├── test_verification.py   # offline unit tests (no models needed)
-│   ├── run_tests.py           # runs test questions and writes test_results.json
+│   ├── check_quality.py
+│   ├── test_verification.py
+│   ├── run_tests.py
 │   ├── test_questions.json
 │   └── test_results.json
+│
 ├── data/
-│   ├── chroma_db/             # the ChromaDB vector index
-│   ├── processed/             # chunk and document JSON files
-│   └── evaluation_questions.json, retrieval_evaluation_labeled_ready.csv
-├── check_repeats.py           # runs one question several times to measure consistency
-├── requirements.txt
+│   ├── chroma_db/
+│   ├── processed/
+│   └── evaluation files
+│
+├── rag_api.py
+├── check_repeats.py
+├── requirements-lock-utf8.txt
 └── README.md
 ```
 
-Raw source files (for example the MedlinePlus XML) are not in the repository.
-The scripts expect them under `data/raw/`.
+> The local `data/` directory can contain generated indexes and source data and should not be uploaded when it is excluded by the project's `.gitignore`.
 
-## Setup
+---
 
-1. Install Python 3 (your cache files show Python 3.13; any recent Python 3 should work).
-2. Install Ollama and download the model:
-   ```
-   ollama pull qwen3:8b
-   ```
-3. Create a virtual environment and install the packages:
-   ```
-   python -m venv env
-   env\Scripts\activate
-   pip install -r requirements.txt
-   ```
+## ⚙️ Setup
 
-No API keys are needed. Optional settings are read from environment variables
-(all have defaults): `OLLAMA_MODEL`, `MIN_RERANKER_SCORE`, `EMERGENCY_NUMBER`.
+Install Python 3 and create a virtual environment.
 
-The first run downloads two Hugging Face models (`all-MiniLM-L6-v2` and
-`cross-encoder/ms-marco-MiniLM-L-6-v2`). The log warning about unauthenticated
-requests is harmless. Setting `HF_TOKEN` removes it and speeds up downloads.
+Install the RAG dependencies:
 
-## Running
-
-Run all commands from the project root (the folder that contains `src/` and `data/`),
-because the database path is relative.
-
-Ask a question interactively:
+```bash
+pip install -r requirements-lock-utf8.txt
 ```
+
+Install and start Ollama, then download the model:
+
+```bash
+ollama pull qwen3:8b
+```
+
+The first run may download the Hugging Face models:
+
+```text
+all-MiniLM-L6-v2
+cross-encoder/ms-marco-MiniLM-L-6-v2
+```
+
+---
+
+## ▶️ Running the RAG System
+
+Run commands from the appropriate project directory so relative paths resolve correctly.
+
+For the standalone RAG module:
+
+```bash
 python src/rag.py
 ```
 
-Tests:
+---
+
+## 🧪 Testing
+
+Offline verification tests:
+
+```bash
+python -m unittest tests/test_verification.py -v
 ```
-python -m unittest tests/test_verification.py -v   # offline, no models needed
-python tests/run_tests.py                          # runs test questions, needs models
-python tests/check_quality.py                      # checks answers against label text, needs models
-python check_repeats.py                            # repeats one question and reports consistency
+
+Run the test questions:
+
+```bash
+python tests/run_tests.py
 ```
 
-## What the tests mean
+Run quality checks:
 
-- **Offline unit tests** check the logic: number and unit matching, the retry,
-  the warning, and the dosage rules. They use stand-in models.
-- **`check_quality.py`** checks each answer against the label text in the index:
-  the right section is cited, and required facts appear in one claim. It does not
-  judge medical correctness.
-- **`run_tests.py`** only shows that the code ran. A `COMPLETED` status does not
-  mean the answer is accurate.
+```bash
+python tests/check_quality.py
+```
 
-## Known limitations
+Check response consistency:
 
-- Only the five metformin questions are tested. MedlinePlus and genetics content
-  have not been tested.
-- The LLM verifier has not yet rejected a claim in testing. The number-and-unit
-  check is the stronger check.
-- The local model sometimes writes numbers wrongly (for example `85,0 mg` for
-  `850 mg`). The retry and the starting-dose warning are the safety net.
-- Emergency detection uses keyword matching, so it can give false alarms
-  (for example "are seizures a side effect?").
-- The answers have not been reviewed by a medical professional.
-- Some data scripts use paths such as `medical_rag/data/...`, which only work if the
-  folder is named `medical_rag` and run from its parent folder. These should be made relative.
+```bash
+python check_repeats.py
+```
 
-## Known issues to fix
+---
 
-- `tests/test_citations.py` imports `validate_claim_support`, which no longer exists in `rag.py`.
-- `src/intent.py` duplicates the intent logic in `rag.py`. Only `tests/test_intents.py` uses it.
+## 🔐 Environment Variables
+
+Optional configuration can be supplied through environment variables.
+
+Examples:
+
+```env
+OLLAMA_MODEL=qwen3:8b
+MIN_RERANKER_SCORE=-6.0
+EMERGENCY_NUMBER=your_emergency_number
+```
+
+Never commit secrets or private configuration values to GitHub.
+
+---
+
+## ⚠️ Known Limitations
+
+- Only the currently defined test questions have been evaluated.
+- Some source datasets and documents are not included in the repository.
+- The LLM verifier may not reject every unsupported claim.
+- Numerical verification provides an additional safety check.
+- The local model can occasionally generate incorrect numerical formatting.
+- Emergency detection uses keyword matching and can produce false alarms.
+- Medical correctness has not been established through clinical validation.
+- Some data scripts may require path adjustments when executed from different directories.
+
+---
+
+## 🛡️ Medical Disclaimer
+
+This RAG system is an **educational and research project**.
+
+Its responses:
+
+- may contain errors;
+- are not medical diagnoses;
+- are not a substitute for professional medical advice;
+- should not be used to make treatment or medication decisions.
+
+Always verify medical information with an appropriate healthcare professional and the original medical source.
+
+---
+
+## 🔗 Part of MedSource AI
+
+The RAG system is integrated into the larger **MedSource AI** FastAPI application.
+
+For the complete project documentation, see:
+
+```text
+../README.md
+```
+
+The complete MedSource AI project combines:
+
+```text
+Machine Learning
+       │
+       ├── Disease Prediction
+       │
+       ├── Medical Image Analysis
+       │
+       └── RAG Medical Chatbot
+                    │
+                    ▼
+              Ollama + Qwen3
+```

@@ -1,14 +1,24 @@
 # 🏥 MedSource AI
 
-> **AI-powered medical assistance, prediction, and medical image analysis platform**
+> **AI-powered medical assistance, disease prediction, medical image analysis, and RAG platform**
 
-MedSource AI is a full-stack AI application built with **Python, FastAPI, Machine Learning, Deep Learning, Computer Vision, and Retrieval-Augmented Generation (RAG)**.
+MedSource AI is a full-stack medical AI application built with **Python, FastAPI, Machine Learning, Deep Learning, Computer Vision, Generative AI, and Retrieval-Augmented Generation (RAG)**.
 
-The platform brings multiple medical AI capabilities together in one application, including disease-risk prediction, medical image classification, and an AI-powered medical chatbot.
+The platform brings multiple AI capabilities together into a single web application, including:
+
+- 🩺 Disease-risk prediction
+- 🩻 Medical image analysis
+- 🧠 Deep-learning-based medical image classification
+- 💬 Medical AI chatbot using RAG
+- 🔎 Medical document retrieval
+- 👤 User authentication and account management
+- 🗄️ MongoDB-based user information storage
+
+> **Medical Disclaimer:** MedSource AI is an educational and research project. Predictions and AI-generated information are not a substitute for professional medical advice, diagnosis, or treatment.
 
 ---
 
-## ✨ Features
+# ✨ Features
 
 | Feature | Technology |
 |---|---|
@@ -19,19 +29,21 @@ The platform brings multiple medical AI capabilities together in one application
 | 🫘 Kidney CT analysis | Deep Learning |
 | 🩻 X-Ray classification | Deep Learning |
 | 💬 Medical AI chatbot | RAG + Ollama |
-| 🔎 Document retrieval | ChromaDB |
+| 🔎 Medical document retrieval | ChromaDB |
 | 🧮 Text embeddings | Sentence Transformers |
-| 🔐 User authentication | FastAPI |
+| 🔐 Authentication | FastAPI |
+| 👤 User information | MongoDB |
 | 🌐 Backend API | FastAPI |
 | 🎨 Web interface | HTML + CSS + JavaScript |
+| 📦 Large model storage | Git LFS |
 
 ---
 
-## 🧠 System Architecture
+# 🧠 System Architecture
 
 ```text
                          ┌─────────────────────┐
-                         │       User          │
+                         │        User         │
                          └──────────┬──────────┘
                                     │
                                     ▼
@@ -40,51 +52,49 @@ The platform brings multiple medical AI capabilities together in one application
                          │     Web Interface   │
                          └──────────┬──────────┘
                                     │
-                         ┌──────────┴──────────┐
-                         │                     │
-                         ▼                     ▼
-                ┌────────────────┐    ┌────────────────┐
-                │ Disease Models │    │ Image Analysis │
-                │ ML / Joblib    │    │ CNN / Keras    │
-                └───────┬────────┘    └───────┬────────┘
-                        │                     │
-                        ▼                     ▼
-                ┌────────────────┐    ┌────────────────┐
-                │    Prediction  │    │   Prediction   │
-                └────────────────┘    └────────────────┘
+                 ┌──────────────────┼──────────────────┐
+                 │                  │                  │
+                 ▼                  ▼                  ▼
+        ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+        │ Disease        │ │ Medical Image  │ │ Medical        │
+        │ Prediction     │ │ Analysis       │ │ Chatbot        │
+        │ ML / Joblib    │ │ CNN / Keras    │ │ RAG + Ollama   │
+        └───────┬────────┘ └───────┬────────┘ └───────┬────────┘
+                │                  │                  │
+                ▼                  ▼                  ▼
+        ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+        │ Risk           │ │ Image          │ │ ChromaDB       │
+        │ Prediction     │ │ Classification │ │ Vector Search  │
+        └────────────────┘ └────────────────┘ └───────┬────────┘
+                                                       │
+                                                       ▼
+                                                ┌──────────────┐
+                                                │ Reranker     │
+                                                └──────┬───────┘
+                                                       │
+                                                       ▼
+                                                ┌──────────────┐
+                                                │ Ollama       │
+                                                │ Qwen3 8B     │
+                                                └──────────────┘
 
-                         ┌─────────────────────┐
-                         │   Medical Chatbot   │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │ Embedding + Search  │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │      ChromaDB        │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │       Reranker       │
-                         └──────────┬──────────┘
-                                    │
-                                    ▼
-                         ┌─────────────────────┐
-                         │      Ollama LLM      │
-                         └─────────────────────┘
+
+                         User Account
+                              │
+                              ▼
+                       ┌─────────────┐
+                       │  MongoDB    │
+                       │ User Data   │
+                       └─────────────┘
 ```
 
 ---
 
 # 🩺 Disease Prediction
 
-MedSource AI includes machine-learning-based prediction modules for different health conditions.
+MedSource AI contains machine-learning models for different health-related prediction tasks.
 
-Current model files include modules such as:
+Current model areas include:
 
 - ❤️ Heart Disease
 - 🫁 COPD
@@ -93,8 +103,9 @@ Current model files include modules such as:
 - 🫘 CKD / Kidney Disease
 - 🦠 Tuberculosis
 
-Typical workflow:
+### Prediction workflow
 
+```text
 User Input
     │
     ▼
@@ -111,41 +122,43 @@ Prediction
     │
     ▼
 Result
+```
 
-The prediction models are intended for **educational and research purposes** and should not be used as standalone medical diagnosis tools.
+The prediction models are intended for **educational and research purposes** and should not be used as standalone medical diagnostic systems.
 
-
+---
 
 # 🩻 Medical Image Analysis
 
-The application contains multiple deep-learning models for medical image analysis.
+MedSource AI uses deep-learning models to classify and analyze medical images.
 
 ### Image pipeline
 
-                 Uploaded Image
-                       │
-                       ▼
-             Medical / Non-Medical
-                       │
-                       ▼
-              Medical Image Type
-                       │
-          ┌────────────┼────────────┐
-          ▼            ▼            ▼
-         CT           MRI          X-Ray
-          │            │            │
-          └────────────┼────────────┘
-                       ▼
-                Organ / Region
-                       │
-                       ▼
+```text
+Uploaded Image
+      │
+      ▼
+Medical / Non-Medical
+      │
+      ▼
+Medical Image Type
+      │
+      ├──────────────┬──────────────┐
+      ▼              ▼              ▼
+     CT             MRI           X-Ray
+      │              │              │
+      └──────────────┼──────────────┘
+                     ▼
+              Organ / Region
+                     │
+                     ▼
                 Disease Class
-                       │
-                       ▼
+                     │
+                     ▼
               Prediction Result
+```
 
-
-### Supported model areas
+### Supported image areas
 
 - Brain MRI
 - Chest CT
@@ -159,16 +172,21 @@ The application contains multiple deep-learning models for medical image analysi
 - Medical image detection
 - Medical image type classification
 
+---
 
 # 💬 Medical AI Chatbot
 
-MedSource AI also contains a **Retrieval-Augmented Generation (RAG)** system.
+MedSource AI includes a **Retrieval-Augmented Generation (RAG)** system for answering medical questions using retrieved reference documents.
 
-Instead of asking the language model to answer entirely from its internal knowledge, the system first retrieves relevant medical documents and provides them as context to the LLM.
+Instead of relying only on the language model's internal knowledge, the system retrieves relevant medical information and provides it as context to the LLM.
 
 ### RAG workflow
 
+```text
 User Question
+      │
+      ▼
+Question / Intent Processing
       │
       ▼
 Text Embedding
@@ -183,72 +201,122 @@ Candidate Documents
 Reranking
       │
       ▼
-Top Relevant Context
+Relevant Context
       │
       ▼
 Ollama LLM
       │
       ▼
-AI Response
+Grounded AI Response
+      │
+      ▼
+Sources
+```
 
-### Current RAG stack
+### RAG stack
 
 - **ChromaDB** — vector database
 - **all-MiniLM-L6-v2** — embedding model
-- **MS MARCO MiniLM** — reranking
+- **MS MARCO MiniLM** — reranking model
 - **Ollama** — local LLM runtime
 - **Qwen3 8B** — language model
+- **Sentence Transformers** — text embeddings
 
-The RAG implementation is located in:
+Detailed RAG documentation is available in:
 
-medical_rag/
+```text
+medical_rag/README.md
+```
 
+---
+
+# 👤 User Authentication & MongoDB
+
+MedSource AI includes user authentication and account-management functionality.
+
+**MongoDB is used to store user/account information.**
+
+The application can use MongoDB for information associated with registered users and account management.
+
+The MongoDB database is separate from the RAG vector database:
+
+```text
+                 MedSource AI
+                      │
+          ┌───────────┴───────────┐
+          │                       │
+          ▼                       ▼
+      MongoDB                  ChromaDB
+          │                       │
+          ▼                       ▼
+   User Information          RAG Documents
+   & Accounts                & Embeddings
+```
+
+### Important security rule
+
+MongoDB connection strings and credentials must **never** be committed to GitHub.
+
+Use environment variables or a local `.env` file instead.
+
+Example:
+
+```env
+MONGODB_URL=your_mongodb_connection_string
+```
+
+The real value must remain private.
 
 ---
 
 # 🛠️ Technology Stack
 
-### Backend
+## Backend
 
 - Python
 - FastAPI
 - Uvicorn
 
-### Machine Learning
+## Machine Learning
 
 - Scikit-learn
 - Pandas
 - NumPy
 - Joblib
 
-### Deep Learning
+## Deep Learning
 
 - TensorFlow
 - Keras
 - CNN
 - Transfer Learning
 
-### Computer Vision
+## Computer Vision
 
 - OpenCV
 - Image preprocessing
 - CLAHE
 
-### Generative AI / RAG
+## Generative AI / RAG
 
 - Ollama
 - Qwen3
 - ChromaDB
 - Sentence Transformers
-- Reranking
+- CrossEncoder / Reranking
 
-### Frontend
+## Database
+
+- MongoDB — user/account information
+- ChromaDB — RAG vector storage
+
+## Frontend
 
 - HTML5
 - CSS3
 - JavaScript
 
-### Development
+## Development
 
 - Git
 - GitHub
@@ -297,20 +365,20 @@ fast API/
 └── Datasets/
 ```
 
-> Local datasets, virtual environments, secrets, generated files, and the local Chroma database are excluded from version control where appropriate.
+> Datasets, virtual environments, secrets, generated files, and the local ChromaDB database are excluded from version control where appropriate.
 
 ---
 
 # ⚙️ Installation
 
-## 1. Clone the Repository
+## 1. Clone the repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-cd "fast API"
+git clone https://github.com/kripank-ms/MedSource-AI.git
+cd MedSource-AI
 ```
 
-## 2. Create a Virtual Environment
+## 2. Create a virtual environment
 
 ```bash
 python3 -m venv env
@@ -322,7 +390,7 @@ Activate it:
 source env/bin/activate
 ```
 
-## 3. Install Dependencies
+## 3. Install dependencies
 
 ```bash
 pip install -r requirments.txt
@@ -340,19 +408,27 @@ cd ..
 
 # 🔐 Environment Configuration
 
-Sensitive configuration should never be committed to GitHub.
+Sensitive configuration must never be committed to GitHub.
 
 Create a local `.env` file when required:
 
 ```env
-API_KEY=your_api_key
+MONGODB_URL=your_mongodb_connection_string
 SECRET_KEY=your_secret_key
-DATABASE_URL=your_database_url
 ```
 
 Keep the real `.env` file private.
 
 For GitHub, use an `.env.example` file containing only placeholder values.
+
+Example:
+
+```env
+MONGODB_URL=your_mongodb_connection_string
+SECRET_KEY=your_secret_key
+```
+
+Never place real passwords, API keys, database credentials, or secret keys in `.env.example`.
 
 ---
 
@@ -408,7 +484,7 @@ import tensorflow as tf
 print(tf.config.list_physical_devices("GPU"))
 ```
 
-Example output:
+Example:
 
 ```text
 [PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
@@ -435,7 +511,7 @@ Install Git LFS:
 git lfs install
 ```
 
-After cloning the repository:
+After cloning:
 
 ```bash
 git lfs pull
@@ -449,45 +525,11 @@ git lfs ls-files
 
 ---
 
-# 🧪 Development
-
-Create a feature branch:
-
-```bash
-git checkout -b feature-name
-```
-
-Check changes:
-
-```bash
-git status
-```
-
-Stage changes:
-
-```bash
-git add .
-```
-
-Commit changes:
-
-```bash
-git commit -m "Describe your changes"
-```
-
-Push the branch:
-
-```bash
-git push origin feature-name
-```
-
----
-
 # 🗃️ Dataset Policy
 
-The project may use large medical datasets during training and evaluation.
+Medical datasets used for training and evaluation are **not included in the GitHub repository**.
 
-Datasets are not included in the GitHub repository by default because of:
+Reasons include:
 
 - Large file sizes
 - Dataset licensing
@@ -511,6 +553,8 @@ Database credentials
 Secret keys
 Private certificates
 Personal medical information
+ChromaDB data
+Virtual environments
 ```
 
 The `.gitignore` file is configured to exclude common sensitive and generated files.
@@ -526,7 +570,9 @@ The predictions and information generated by this application:
 - are not guaranteed to be medically accurate;
 - are not a substitute for professional medical advice;
 - should not be used to make medical decisions;
-- should be evaluated by qualified healthcare professionals before any real-world clinical use.
+- should be evaluated by qualified healthcare professionals before real-world clinical use.
+
+Do not use this project as a replacement for a doctor, pharmacist, or other qualified healthcare professional.
 
 ---
 
@@ -570,9 +616,9 @@ BCA Graduate with an interest in:
 
 # 📄 License
 
-This project is intended primarily for educational and research purposes.
+This project is primarily intended for educational and research purposes.
 
-If this project is distributed publicly, add an appropriate license such as **MIT**, **Apache-2.0**, or another license that matches the project's requirements and the licenses of its dependencies and datasets.
+If this project is distributed publicly, add an appropriate open-source license after checking the licenses of the dependencies, datasets, and other third-party components.
 
 ---
 
@@ -581,18 +627,24 @@ If this project is distributed publicly, add an appropriate license such as **MI
 **MedSource AI** combines traditional machine learning, deep learning, computer vision, and generative AI into a single medical-focused application.
 
 ```text
-                 MEDSOURCE AI
-                      │
-        ┌─────────────┼─────────────┐
-        │             │             │
-        ▼             ▼             ▼
-   ML Prediction   Image AI      RAG Chatbot
-        │             │             │
-        ▼             ▼             ▼
-   Health Risk     CNN Models   Medical Docs
-                      │             │
-                      ▼             ▼
-                  AI Analysis   AI Response
+                    MEDSOURCE AI
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+          ▼              ▼              ▼
+     ML Prediction    Image AI      RAG Chatbot
+          │              │              │
+          ▼              ▼              ▼
+      Health Risk     CNN Models   Medical Docs
+          │              │              │
+          │              ▼              ▼
+          │          AI Analysis    AI Response
+          │
+          ▼
+     User Account
+          │
+          ▼
+       MongoDB
 ```
 
-**Built with Python + FastAPI + TensorFlow + Machine Learning + RAG + Generative AI.**
+**Built with Python + FastAPI + TensorFlow + Machine Learning + Computer Vision + RAG + Generative AI + MongoDB.**
